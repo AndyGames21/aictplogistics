@@ -1,59 +1,38 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const localSelect = document.getElementById("localDestination");
-  const otherLocal = document.getElementById("otherLocal");
-  const internationalSelect = document.getElementById("internationalDestination");
-  const otherInternational = document.getElementById("otherInternational");
   const bookingForm = document.getElementById("bookingForm");
-  const routeInput = document.getElementById("route_id");
+  const formMessage = document.getElementById("formMessage");
 
-  function toggleOther(select, otherInput) {
-    otherInput.style.display = select.value === "Other" ? "block" : "none";
-  }
-
-  function toggleGroups() {
-    if (localSelect.value) {
-      document.getElementById("internationalGroup").style.display = "none";
-      document.getElementById("localGroup").style.display = "block";
-    } else if (internationalSelect.value) {
-      document.getElementById("localGroup").style.display = "none";
-      document.getElementById("internationalGroup").style.display = "block";
-    } else {
-      document.getElementById("localGroup").style.display = "block";
-      document.getElementById("internationalGroup").style.display = "block";
-    }
-  }
-
-  localSelect.addEventListener("change", () => {
-    toggleOther(localSelect, otherLocal);
-    toggleGroups();
-  });
-
-  internationalSelect.addEventListener("change", () => {
-    toggleOther(internationalSelect, otherInternational);
-    toggleGroups();
-  });
-
-  bookingForm.addEventListener("submit", (e) => {
+  bookingForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    let route = "";
-    if (localSelect.value) {
-      route = localSelect.value === "Other" ? otherLocal.value.trim() : localSelect.value;
-    } else if (internationalSelect.value) {
-      route = internationalSelect.value === "Other" ? otherInternational.value.trim() : internationalSelect.value;
+    const formData = {
+      destination: document.getElementById("destination").value.trim(),
+      departure_date: document.getElementById("departureDate").value,
+      return_date: document.getElementById("returnDate").value,
+      flight_time: document.getElementById("flightTime").value,
+      details: document.getElementById("details").value.trim(),
+    };
+
+    try {
+      const res = await fetch("/book-trip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      formMessage.textContent = data.message || data.error;
+      formMessage.className = `form-message ${data.success ? "success" : "error"}`;
+
+      if (data.success) {
+        bookingForm.reset();
+      }
+    } catch (err) {
+      console.error("Booking error:", err);
+      formMessage.textContent = "Error submitting booking. Please try again.";
+      formMessage.className = "form-message error";
     }
-
-    const date = document.getElementById("date").value;
-
-    if (!route || !date) {
-      alert("Please select a route and date.");
-      return;
-    }
-
-    // Set the hidden input so server gets it
-    routeInput.value = route;
-
-    bookingForm.submit();
   });
 });
 document.addEventListener("DOMContentLoaded", () => {

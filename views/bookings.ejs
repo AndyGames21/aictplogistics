@@ -4,7 +4,8 @@
 <title>Request A Booking | AICTP Logistics LTD</title>
 <link rel="stylesheet" href="/css/bookings.css" />
 <script defer src="/js/bookings.js"></script>
-<link rel="icon" type="image/x-icon" href="/images/logo.jpg"/>
+<link rel="icon" type="image/x-icon" href="/images/logo.jpg" />
+
 <!-- Navbar -->
 <nav>
   <div class="logo-title">
@@ -14,7 +15,6 @@
     </a>
   </div>
 
-  <!-- Hamburger -->
   <div class="hamburger" id="hamburger">
     <div></div>
     <div></div>
@@ -28,55 +28,34 @@
     <a href="/logout">Logout</a>
   </div>
 </nav>
-  <div class="container">
-  <!-- Back Button -->
+
+<div class="container">
   <a href="/dashboard" class="back-btn">← Back to Home</a>
   <div class="x">
     <h1>Request A Trip</h1>
 
     <% if (user && user.id) { %>
-      <form id="bookingForm" action="/book-trip" method="POST" class="booking-form">
+      <form id="bookingForm" class="booking-form">
+        <label for="destination">Destination:</label>
+        <input type="text" name="destination" id="destination" placeholder="Enter destination" required />
 
-        <!-- Hidden input for final destination -->
-        <input type="hidden" name="destination" id="route_id" />
+        <label for="departureDate">Departure Date:</label>
+        <input type="date" name="departure_date" id="departureDate" required />
 
-        <!-- Local Nigerian Flights -->
-        <div id="localGroup">
-          <label for="localDestination">Local Nigerian Flight:</label>
-          <select name="localDestination" id="localDestination">
-            <option value="">Select local route</option>
-            <option value="PHC → LOS">PHC → LOS</option>
-            <option value="ABV → LOS">ABV → LOS</option>
-            <option value="KAN → LOS">KAN → LOS</option>
-            <option value="ENU → LOS">ENU → LOS</option>
-            <option value="Other">Other</option>
-          </select>
-          <input type="text" id="otherLocal" placeholder="Enter other local route" style="display:none;" />
-        </div>
+        <label for="returnDate">Return Date:</label>
+        <input type="date" name="return_date" id="returnDate" required />
 
-        <!-- International Flights -->
-        <div id="internationalGroup">
-          <label for="internationalDestination">International Flight:</label>
-          <select name="internationalDestination" id="internationalDestination">
-            <option value="">Select international destination</option>
-            <option value="London">London</option>
-            <option value="Paris">Paris</option>
-            <option value="New York">New York</option>
-            <option value="Qatar">Doha,Qatar</option>
-            <option value="Canada">Ontario, Canada</option>
-            <option value="Other">Other</option>
-          </select>
-          <input type="text" id="otherInternational" placeholder="Enter other international destination" style="display:none;" />
-        </div>
-
-        <label for="date">Date of Travel:</label>
-        <input type="date" name="travel_date" id="date" required />
+        <label for="flightTime">Time of Flight:</label>
+        <input type="time" name="flight_time" id="flightTime" required />
 
         <label for="details">Additional Details:</label>
         <textarea name="details" id="details" rows="3" placeholder="Any extra information..."></textarea>
 
         <button type="submit">Request A Trip</button>
+
+        <p id="formMessage" class="form-message"></p>
       </form>
+
       <section class="bookings-list">
         <h2>Your Requested Trips</h2>
 
@@ -86,9 +65,9 @@
               <li class="booking-item">
                 <div class="booking-header">
                   <strong class="destination"><%= booking.destination %></strong>
-                  <span class="date"><%= new Date(booking.travel_date).toLocaleDateString() %></span>
+                  <span class="date">Depart: <%= new Date(booking.departure_date).toLocaleDateString() %> | Return: <%= new Date(booking.return_date).toLocaleDateString() %></span>
+                  <span class="time">Time: <%= booking.flight_time %></span>
                 </div>
-
                 <div class="booking-status">
                   <% if (booking.status === 'sent') { %>
                     <span class="badge badge-sent">Sent</span>
@@ -100,7 +79,6 @@
                     <span class="badge badge-unknown">Unknown</span>
                   <% } %>
                 </div>
-
                 <div class="booking-details">
                   <p><%= booking.details || "No extra details provided." %></p>
                 </div>
@@ -115,3 +93,4 @@
       <p>Please <a href="/login">log in</a> to book and view your requested trips.</p>
     <% } %>
   </div>
+</div>

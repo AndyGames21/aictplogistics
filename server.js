@@ -144,7 +144,7 @@ app.get("/", async (req, res) => {
   if (user) {
     try {
       const userBookingsResults = await pool.query(
-        "SELECT * FROM bookings WHERE user_id = $1 ORDER BY travel_date DESC",
+        "SELECT * FROM bookings WHERE user_id = $1 ORDER BY departure_date DESC",
         [user.id]
       );
       userBookings = userBookingsResults.rows;
@@ -165,7 +165,7 @@ app.get("/contactUs", (req, res) => res.redirect("/#contactUs"));
 // ===================
 app.get("/bookings", ensureAuthenticated, async (req, res) => {
   const userBookingsResults = await pool.query(
-    "SELECT * FROM bookings WHERE user_id = $1 ORDER BY travel_date DESC", 
+    "SELECT * FROM bookings WHERE user_id = $1 ORDER BY departure_date DESC", 
     [req.session.user.id]
   );
   const userBookings = userBookingsResults.rows.map(b => ({ ...b, status: b.status || "sent" }));
@@ -174,17 +174,18 @@ app.get("/bookings", ensureAuthenticated, async (req, res) => {
 
 app.get("/bookingAdmin", ensureAuthenticated, ensureAdmin, async (req, res) => {
   const adminBookingsResults = await pool.query(`
-    SELECT b.id AS booking_id, b.destination, b.travel_date, b.details, b.status, 
+    SELECT b.id AS booking_id, b.destination, b.departure_date, b.return_date, b.details, b.status, 
            u.fullname AS user_name, u.email AS user_email, u.phone AS user_phone
     FROM bookings b
     INNER JOIN users u ON b.user_id = u.id
-    ORDER BY b.travel_date DESC
+    ORDER BY b.departure_date DESC
   `);
 
   const adminBookings = adminBookingsResults.rows.map(row => ({
     id: row.booking_id,
     destination: row.destination,
-    travel_date: row.travel_date,
+    departure_date: row.departure_date,
+    return_date: row.return_date,
     details: row.details,
     status: row.status || "sent",
     user: { name: row.user_name, email: row.user_email, phone: row.user_phone },
@@ -201,8 +202,55 @@ app.post('/update-booking/:id', ensureAuthenticated, ensureAdmin, async (req, re
   const status = req.query.status;
 
   try {
+    // Fetch user and booking details
+    const bookingResult = await pool.query(
+      `SELECT b.id, b.destination, b.departure_date, b.return_date, u.email, u.fullname
+       FROM bookings b
+       INNER JOIN users u ON b.user_id = u.id
+       WHERE b.id = $1`,
+      [bookingId]
+    );
+
+    if (bookingResult.rows.length === 0) {
+      return res.send("Booking not found.");
+    }
+
+    const booking = bookingResult.rows[0];
+
+    // Update the booking status in the database
     await pool.query('UPDATE bookings SET status = $1 WHERE id = $2', [status, bookingId]);
-    res.send(`Booking status updated to "${status}".`);
+
+    // Send email based on status
+    let subject, message;
+    if (status === 'processing') {
+      subject = `Your Booking is Being Processed`;
+      message = `
+        <p>Hi ${booking.fullname},</p>
+        <p>Your booking for <strong>${booking.destination}</strong> on <strong>${new Date(booking.departure_date).toLocaleDateString()}</strong> is now <strong>being processed</strong>.</p>
+        <p>We will notify you once it's confirmed.</p>
+        <p>– AICTP Logistics Team</p>
+      `;
+    } else if (status === 'processed') {
+      subject = `Your Booking is Confirmed`;
+      message = `
+        <p>Hi ${booking.fullname},</p>
+        <p>Great news! Your booking for <strong>${booking.destination}</strong> on <strong>${new Date(booking.travel_date).toLocaleDateString()}</strong> has been <strong>processed and confirmed</strong>.</p>
+        <p>Thank you for choosing AICTP Logistics. Have a safe trip!</p>
+        <p>– AICTP Logistics Team</p>
+      `;
+    }
+
+    if (subject && message) {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: booking.email,
+        subject: subject,
+        html: message,
+      });
+    }
+
+    res.redirect(`/bookingAdmin`);
+
   } catch (err) {
     console.error(err);
     res.send("Error updating booking status.");
@@ -216,7 +264,7 @@ app.delete('/bookings/:id', ensureAuthenticated, ensureAdmin, async (req, res) =
     const result = await pool.query('DELETE FROM bookings WHERE id = $1', [bookingId]);
     if (result.rowCount === 0) return res.send("Booking not found.");
 
-    res.send("Booking deleted successfully.");
+    res.redirect("/bookingAdmin");
   } catch (err) {
     console.error(err);
     res.send("Error deleting booking.");
@@ -226,34 +274,94 @@ app.delete('/bookings/:id', ensureAuthenticated, ensureAdmin, async (req, res) =
 // ===================
 // Book A Trip
 // ===================
+// Create Booking Route
 app.post("/book-trip", ensureAuthenticated, async (req, res) => {
-  const { destination, travel_date, details } = req.body;
+  const { destination, departure_date, return_date, flight_time, details } = req.body;
   const userId = req.session.user.id;
 
-  if (!destination || !travel_date) {
-    return res.send({ success: false, message: "Destination and travel date are required." });
-  }
-
-  const today = new Date();
-  const selectedDate = new Date(travel_date);
-  today.setHours(0, 0, 0, 0);
-  selectedDate.setHours(0, 0, 0, 0);
-
-  if (selectedDate < today) {
-    return res.send({ success: false, message: "Travel date cannot be in the past." });
+  // === Validate required fields ===
+  if (!destination || !departure_date || !flight_time) {
+    return res.json({ success: false, error: "Destination, departure date, and flight time are required." });
   }
 
   try {
-    await pool.query(
-      "INSERT INTO bookings (user_id, destination, travel_date, details) VALUES ($1, $2, $3, $4)",
-      [userId, destination, travel_date, details]
-    );
-    res.send({ success: true, message: "Booking created successfully." });
+    const today = new Date();
+    const depDate = new Date(departure_date);
+    const retDate = return_date ? new Date(return_date) : null;
+
+    today.setHours(0, 0, 0, 0);
+    depDate.setHours(0, 0, 0, 0);
+    if (depDate < today) {
+      return res.json({ success: false, error: "Departure date cannot be in the past." });
+    }
+
+    if (retDate && retDate < depDate) {
+      return res.json({ success: false, error: "Return date cannot be earlier than departure date." });
+    }
+
+    // === Insert booking into DB ===
+    const insertQuery = `
+      INSERT INTO bookings (user_id, destination, departure_date, return_date, flight_time, details)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING id, created_at
+    `;
+    const insertValues = [userId, destination, departure_date, return_date || null, flight_time, details || null];
+    const result = await pool.query(insertQuery, insertValues);
+
+    // === Get user details for email ===
+    const userQuery = `SELECT fullname, email FROM users WHERE id = $1`;
+    const userResult = await pool.query(userQuery, [userId]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      return res.json({ success: false, error: "User not found." });
+    }
+
+    // === Prepare email booking data ===
+    const bookingData = {
+      fullname: user.fullname,
+      email: user.email,
+      destination,
+      departure_date,
+      return_date: return_date || "N/A",
+      flight_time,
+      details: details || "No additional details provided."
+    };
+
+    // === Send notification email ===
+    await sendBookingEmail(bookingData);
+
+    // === Return success ===
+    res.json({ success: true, message: "Booking request sent successfully!" });
+
   } catch (err) {
     console.error("Error creating booking:", err);
-    res.status(500).send({ success: false, message: "Server error while creating booking." });
+    res.status(500).json({ success: false, error: "Server error while creating booking." });
   }
 });
+const sendBookingEmail = async (booking) => {
+  const subject = `New Booking Request - ${booking.fullname}`;
+  const message = `
+    <h1>New Booking Request</h1>
+    <p><strong>${booking.fullname}</strong> (${booking.email}) has requested a trip.</p>
+    <p><strong>Booking Details:</strong></p>
+    <ul>
+      <li><strong>Destination:</strong> ${booking.destination}</li>
+      <li><strong>Departure Date:</strong> ${new Date(booking.departure_date).toLocaleDateString()}</li>
+      <li><strong>Return Date:</strong> ${booking.return_date === "N/A" ? "Not specified" : new Date(booking.return_date).toLocaleDateString()}</li>
+      <li><strong>Flight Time:</strong> ${booking.flight_time}</li>
+      <li><strong>Additional Details:</strong> ${booking.details}</li>
+    </ul>
+    <p>Check the admin dashboard for more details.</p>
+  `;
+
+  await transporter.sendMail({
+    from: `"AICTP Logistics" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_USER,
+    subject,
+    html: message,
+  });
+};
 
 // ===================
 // Authentication Routes
@@ -263,12 +371,12 @@ app.get("/register", (req, res) => res.render("register"));
 app.post("/register", async (req, res) => {
   const { name, email, phone, password } = req.body;
   if (!name || !email || !phone || !password)
-    return res.send("All fields required.");
+    return res.status(400).json({ error: "All fields required." });
 
   try {
     const emailCheckResults = await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
     if (emailCheckResults.rows.length > 0)
-      return res.send("Email already registered.");
+      return res.status(400).json({ error: "Email already registered." });
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await pool.query(
@@ -276,10 +384,10 @@ app.post("/register", async (req, res) => {
       [name, email, phone, hashedPassword]
     );
 
-    res.send({ success: true, redirect: "/login" });
+    res.redirect("/login");
   } catch (err) {
     console.error(err);
-    res.send({ success: false, message: "Database error." });
+    res.status(500).json({ error: "Database error." });
   }
 });
 
@@ -347,10 +455,10 @@ app.post("/profile/update", ensureAuthenticated, async (req, res) => {
     if (name) req.session.user.name = name;
     if (phone) req.session.user.phone = phone;
 
-    res.send("Profile updated successfully.");
+    res.redirect("/profile");
   } catch (err) {
     console.error(err);
-    res.send("Error updating profile.");
+    res.json({ error: "Error updating profile." });
   }
 });
 
@@ -365,11 +473,11 @@ app.post("/delete-profile", async (req, res) => {
       req.session.destroy();
       res.redirect("/");
     } else {
-      res.status(404).send("User not found.");
+      res.status(404).json({ error: "User not found." });
     }
   } catch (error) {
     console.error("Error deleting profile:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
@@ -384,36 +492,52 @@ app.get("/userAdmin", ensureAuthenticated, ensureAdmin, async (req, res) => {
     res.render("adminUsers", { user: req.session.user, users: adminUsersResults.rows });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).json("Server Error");
   }
 });
 
 app.post("/delete-user/:id", ensureAuthenticated, ensureAdmin, async (req, res) => {
   const userId = req.params.id;
   if (req.session.user.id.toString() === userId) {
-    return res.status(400).send("You cannot delete your own account.");
+    return res.status(400).json({ error: "You cannot delete your own account." });
   }
 
   try {
     const deleteUserResult = await pool.query("DELETE FROM users WHERE id = $1", [userId]);
     if (deleteUserResult.rowCount === 0) {
-      return res.status(404).send("User not found.");
+      return res.status(404).json({ error: "User not found." });
     }
     res.redirect("/userAdmin");
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
 app.post('/promote-user/:id', async (req, res) => {
   const userId = req.params.id;
+  if (req.session.user.id.toString() === userId) {
+    return res.status(400).json({ error: "You cannot promote your own account." });
+  }
   try {
     await pool.query('UPDATE users SET role = $1 WHERE id = $2', ['admin', userId]);
     res.redirect('/userAdmin');
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error during promotion');
+    res.status(500).json({ error: "Server error during promotion" });
+  }
+});
+app.post('/demote-user/:id', async (req, res) => {
+  const userId = req.params.id;
+  if (req.session.user.id.toString() === userId) {
+    return res.status(400).json({ error: "You cannot demote your own account." });
+  }
+  try {
+    await pool.query('UPDATE users SET role = $1 WHERE id = $2', ['user', userId]);
+    res.redirect('/userAdmin');
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error during demotion" });
   }
 });
 
@@ -424,7 +548,7 @@ app.post("/contactUs", contactLimiter, async (req, res) => {
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
-    return res.status(400).send({ success: false, message: "All fields are required." });
+    return res.status(400).json({ error: "All fields are required." });
   }
 
   try {
@@ -445,10 +569,10 @@ app.post("/contactUs", contactLimiter, async (req, res) => {
       `,
     });
 
-    res.send({ success: true, message: "Message received! We will get back to you soon." });
+    res.json({ success: true, message: "Message received! We will get back to you soon." });
   } catch (err) {
     console.error(err);
-    res.status(500).send({ success: false, message: "Server error. Try again later." });
+    res.status(500).json({ success: false, message: "Server error. Try again later." });
   }
 });
 

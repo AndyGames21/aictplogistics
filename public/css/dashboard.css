@@ -158,42 +158,94 @@ body.menu-open {
     font-size: 14px;
   }
 }
-/* Bookings List Section */
+/* === Bookings List === */
 .bookings-list {
-  max-width: 800px;
-  margin: 0 auto;
+  background: #fff;
   padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.booking-card {
-  border: 1px solid #ccc;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  background-color: #f9f9f9;
+.bookings-list h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
 }
 
-.status-badge {
+.user-bookings-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+.booking-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background: #fafafa;
+  transition: box-shadow 0.3s ease;
+}
+
+.booking-item:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.booking-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.booking-header .destination {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.booking-header .date,
+.booking-header .time {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* Status badges */
+.badge {
   display: inline-block;
-  padding: 3px 8px;
-  border-radius: 4px;
-  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
   font-weight: bold;
   text-transform: capitalize;
 }
 
-/* Status colors */
-.status-badge.sent {
-  background-color: #007bff; /* blue */
+.badge-sent {
+  background: #3498db;
+  color: white;
 }
 
-.status-badge.processing {
-  background-color: #fd7e14; /* orange */
+.badge-processing {
+  background: #f1c40f;
+  color: white;
 }
 
-.status-badge.processed {
-  background-color: #28a745; /* green */
+.badge-processed {
+  background: #2ecc71;
+  color: white;
 }
+
+.badge-unknown {
+  background: #7f8c8d;
+  color: white;
+}
+
+/* No bookings message */
+.no-bookings {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  text-align: center;
+  margin-top: 20px;
+}
+
 /* ===== Services Section ===== */
 .services-section {
   margin: 60px auto;

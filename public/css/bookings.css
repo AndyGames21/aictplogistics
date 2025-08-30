@@ -1,29 +1,24 @@
-/* bookings.css */
-
-/* Reset & base styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
+/* === Global Styles === */
 body {
-  background-color: #ffffff;
-  color: #000000;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 100px 20px 20px; /* Leave space for fixed navbar */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f6fa;
+  color: #333;
+  line-height: 1.5;
 }
 
-/* ===== Navigation ===== */
+.container {
+  max-width: 900px;
+  margin: 100px auto 50px;
+  padding: 20px;
+}
+
+/* === Navbar === */
 nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fff;
+  background-color: whitesmoke;
   padding: 10px 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   position: fixed;
@@ -49,9 +44,10 @@ nav {
 }
 
 .logo-title a h1 {
-  font-size: 20px;
+  font-size: 1.2rem;
   color: #333;
   font-weight: bold;
+  font-family: "Algerian", sans-serif;
 }
 
 .nav-links {
@@ -65,13 +61,14 @@ nav {
   color: #333;
   font-weight: 500;
   transition: color 0.2s;
+  font-style: bold;
 }
 
 .nav-links a:hover {
   color: #2e7d20;
 }
 
-/* ===== Hamburger Menu (mobile only) ===== */
+/* === Hamburger Menu === */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -100,182 +97,8 @@ nav {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* ===== Main content container ===== */
-.container {
-  background-color: #f0fff0;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  max-width: 700px;
-  width: 100%;
-}
-
-.container h1 {
-  text-align: center;
-  color: #000000;
-  margin-bottom: 25px;
-}
-
-/* ===== Booking Form ===== */
-.booking-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.booking-form label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.booking-form select,
-.booking-form input[type="text"],
-.booking-form input[type="date"],
-.booking-form textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #a0d6a0;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.2s ease;
-}
-
-.booking-form select:focus,
-.booking-form input:focus,
-.booking-form textarea:focus {
-  border-color: #4CAF50;
-  outline: none;
-}
-
-.booking-form button {
-  background-color: #4CAF50;
-  color: white;
-  font-weight: bold;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.booking-form button:hover {
-  background-color: #45a049;
-}
-/* ===== User Bookings Page Styles ===== */
-
-/* User Bookings List */
-.user-bookings-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* Booking Items */
-.user-bookings-list .booking-item {
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-/* Header */
-.booking-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.booking-header .destination {
-  font-weight: bold;
-  color: #34495e;
-}
-.booking-header .date {
-  font-size: 0.9rem;
-  color: #7f8c8d;
-}
-
-/* Status Badges */
-.booking-status {
-  margin: 10px 0;
-}
-.badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: #fff;
-  text-transform: uppercase;
-}
-.badge-sent {
-  background-color: #f39c12;
-}
-.badge-processing {
-  background-color: #3498db;
-}
-.badge-processed {
-  background-color: #2ecc71;
-}
-.badge-unknown {
-  background-color: #7f8c8d;
-}
-
-/* Booking Details */
-.booking-details {
-  font-style: italic;
-  color: #7f8c8d;
-}
-
-/* Empty State */
-.no-bookings {
-  text-align: center;
-  color: #7f8c8d;
-  font-style: italic;
-}
-
-
-/* ===== Login prompt & Back button ===== */
-.container p {
-  text-align: center;
-  font-size: 16px;
-}
-
-.container p a {
-  color: #4CAF50;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.container p a:hover {
-  text-decoration: underline;
-}
-
-.back-btn {
-  display: inline-block;
-  margin-bottom: 20px;
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: black;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-.back-btn:hover {
-  background-color: #66cc66;
-}
-
-/* ===== Responsive styles ===== */
-@media screen and (max-width: 768px) {
-  .container {
-    padding: 20px;
-  }
-
-  .booking-form button {
-    padding: 10px;
-  }
-
+/* Mobile Navbar */
+@media (max-width: 768px) {
   .hamburger {
     display: flex;
     margin: 0 20px;
@@ -300,43 +123,158 @@ nav {
 
   .nav-links a {
     margin: 10px 0;
+    font-style: bold;
   }
 }
 
-@media screen and (max-width: 480px) {
-  .container {
-    padding: 15px;
-  }
-
-  .booking-form select,
-  .booking-form input[type="text"],
-  .booking-form input[type="date"],
-  .booking-form textarea {
-    font-size: 14px;
-  }
-
-  .booking-form button {
-    font-size: 14px;
-    padding: 8px;
-  }
+/* === Back Button === */
+.back-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #2e7d20;
+  font-weight: bold;
 }
 
-/* ===== Desktop override to fix nav display ===== */
-@media screen and (min-width: 769px) {
-  .nav-links {
-    display: flex !important;
-    position: static;
-    flex-direction: row;
-    box-shadow: none;
-    background: none;
-    padding: 0;
-  }
+.back-btn:hover {
+  color: #3d9c0a;
+}
 
-  .nav-links a {
-    margin: 0 10px;
-  }
+/* === Booking Form === */
+.booking-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
 
-  .hamburger {
-    display: none;
-  }
+.booking-form label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.booking-form input,
+.booking-form textarea,
+.booking-form button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.booking-form textarea {
+  resize: none;
+}
+
+.booking-form button {
+  background: #2e7d20;
+  color: white;
+  border: none;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.booking-form button:hover {
+  background: #3d9c0a;
+}
+
+/* Inline message */
+.form-message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* === Bookings List === */
+.bookings-list {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bookings-list h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+}
+
+.user-bookings-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+.booking-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background: #fafafa;
+  transition: box-shadow 0.3s ease;
+}
+
+.booking-item:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.booking-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.booking-header .destination {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.booking-header .date,
+.booking-header .time {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.badge-sent {
+  background: #3498db;
+  color: white;
+}
+
+.badge-processing {
+  background: #f1c40f;
+  color: white;
+}
+
+.badge-processed {
+  background: #2ecc71;
+  color: white;
+}
+
+.badge-unknown {
+  background: #7f8c8d;
+  color: white;
+}
+
+/* No bookings message */
+.no-bookings {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  text-align: center;
+  margin-top: 20px;
 }

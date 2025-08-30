@@ -67,13 +67,13 @@ body {
 .nav-links li a:hover {
   color: #27ae60;
 }
-
-/* ===== Hamburger Menu (Mobile) ===== */
+/* === Hamburger Menu === */
 .hamburger {
   display: none;
   flex-direction: column;
-  cursor: pointer;
   gap: 5px;
+  cursor: pointer;
+  z-index: 2001;
 }
 
 .hamburger div {
@@ -81,7 +81,51 @@ body {
   height: 3px;
   background-color: #333;
   border-radius: 2px;
+  transition: all 0.3s ease;
 }
+
+.hamburger.active div:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active div:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile Navbar */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+    margin: 0 20px;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    margin: 10px 0;
+    font-style: bold;
+  }
+}
+
 
 /* ===== Container ===== */
 .container {
