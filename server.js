@@ -202,27 +202,28 @@ app.post('/update-booking/:id', ensureAuthenticated, ensureAdmin, async (req, re
 
   try {
     await pool.query('UPDATE bookings SET status = $1 WHERE id = $2', [status, bookingId]);
-    res.json({ success: true, status }); // respond with JSON
+    res.send(`Booking status updated to "${status}".`);
   } catch (err) {
-    console.error('Error updating booking:', err);
-    res.status(500).json({ success: false, message: 'Server error while updating booking' });
+    console.error(err);
+    res.send("Error updating booking status.");
   }
 });
+
 
 // Delete booking
 app.delete('/bookings/:id', ensureAuthenticated, ensureAdmin, async (req, res) => {
   const bookingId = req.params.id;
-
   try {
     const result = await pool.query('DELETE FROM bookings WHERE id = $1', [bookingId]);
-    if (result.rowCount === 0) return res.status(404).json({ success: false, message: 'Booking not found' });
+    if (result.rowCount === 0) return res.send("Booking not found.");
 
-    res.json({ success: true }); // respond with JSON
+    res.send("Booking deleted successfully."); // inline confirmation
   } catch (err) {
-    console.error('Error deleting booking:', err);
-    res.status(500).json({ success: false, message: 'Server error while deleting booking' });
+    console.error(err);
+    res.send("Error deleting booking.");
   }
 });
+
 
 // ===================
 // Book A Trip
@@ -287,26 +288,16 @@ app.post("/register", async (req, res) => {
 app.get("/login", (req, res) => res.render("login"));
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.json({ success: false, message: "Both fields required." });
-  }
+  if (!email || !password) return res.send("Both email and password are required.");
 
   try {
     const result = await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
-
-    if (result.rows.length === 0) {
-      return res.json({ success: false, message: "Invalid email or password." });
-    }
+    if (result.rows.length === 0) return res.send("Invalid email or password.");
 
     const user = result.rows[0];
     const passwordMatches = await bcrypt.compare(password, user.password);
+    if (!passwordMatches) return res.send("Invalid email or password.");
 
-    if (!passwordMatches) {
-      return res.json({ success: false, message: "Invalid email or password." });
-    }
-
-    // Login successful
     req.session.user = {
       id: user.id,
       name: user.fullname,
@@ -317,18 +308,14 @@ app.post("/login", async (req, res) => {
 
     const redirectTo = req.session.returnTo || "/dashboard";
     delete req.session.returnTo;
-
-    return res.json({ success: true, redirect: redirectTo });
+    res.redirect(redirectTo);
 
   } catch (error) {
-    console.error("Login error:", error);
-
-    // Always ensure response is sent once
-    if (!res.headersSent) {
-      return res.status(500).json({ success: false, message: "Server error." });
-    }
+    console.error(error);
+    res.send("Server error. Please try again.");
   }
 });
+
 
 // ===================
 // Profile Management
@@ -341,44 +328,34 @@ app.post("/profile/update", ensureAuthenticated, async (req, res) => {
   const { name, phone, password } = req.body;
   const userId = req.session.user.id;
 
-  if (!name && !phone && !password)
-    return res.json({ success: false, message: "Please fill in at least one field." });
+  if (!name && !phone && !password) return res.send("Please fill in at least one field.");
 
   try {
     const fields = [];
     const params = [];
-    let paramIndex = 1;
+    let idx = 1;
 
-    if (name) {
-      fields.push(`fullname = $${paramIndex++}`);
-      params.push(name);
+    if (name) { fields.push(`fullname = $${idx++}`); params.push(name); }
+    if (phone) { fields.push(`phone = $${idx++}`); params.push(phone); }
+    if (password) { 
+      const hashed = await bcrypt.hash(password, 10); 
+      fields.push(`password = $${idx++}`); 
+      params.push(hashed); 
     }
 
-    if (phone) {
-      fields.push(`phone = $${paramIndex++}`);
-      params.push(phone);
-    }
-
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      fields.push(`password = $${paramIndex++}`);
-      params.push(hashedPassword);
-    }
-
-    const updateProfileQuery = `UPDATE users SET ${fields.join(", ")} WHERE id = $${paramIndex}`;
     params.push(userId);
-
-    await pool.query(updateProfileQuery, params);
+    await pool.query(`UPDATE users SET ${fields.join(", ")} WHERE id = $${idx}`, params);
 
     if (name) req.session.user.name = name;
     if (phone) req.session.user.phone = phone;
 
-    res.json({ success: true, message: "Profile updated successfully." });
+    res.send("Profile updated successfully.");
   } catch (err) {
-    console.error("Error updating profile:", err);
-    res.json({ success: false, message: "Error updating profile." });
+    console.error(err);
+    res.send("Error updating profile.");
   }
 });
+
 
 app.post("/delete-profile", async (req, res) => {
   try {
