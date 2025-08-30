@@ -263,12 +263,12 @@ app.get("/register", (req, res) => res.render("register"));
 app.post("/register", async (req, res) => {
   const { name, email, phone, password } = req.body;
   if (!name || !email || !phone || !password)
-    return res.send({ success: false, message: "All fields required." });
+    return res.send("All fields required.");
 
   try {
     const emailCheckResults = await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
     if (emailCheckResults.rows.length > 0)
-      return res.send({ success: false, message: "Email already registered." });
+      return res.send("Email already registered.");
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await pool.query(
