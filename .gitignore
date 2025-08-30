@@ -1,0 +1,14 @@
+# Node Modules
+node_modules/
+
+# Environment Variables
+.env 
+
+# Logs
+logs/
+
+# Sql Script
+sql/
+
+# Code Runner Temp File
+tempCodeRunnerFile.js

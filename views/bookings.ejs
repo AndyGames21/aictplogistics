@@ -1,0 +1,117 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Request A Booking | AICTP Logistics LTD</title>
+<link rel="stylesheet" href="/css/bookings.css" />
+<script defer src="/js/bookings.js"></script>
+<link rel="icon" type="image/x-icon" href="/images/logo.jpg"/>
+<!-- Navbar -->
+<nav>
+  <div class="logo-title">
+    <a href="/" class="logo-link">
+      <img src="/images/logo.jpg" alt="AICTP Logo" />
+      <h1>AICTP Logistics</h1>
+    </a>
+  </div>
+
+  <!-- Hamburger -->
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <div class="nav-links" id="navLinks">
+    <a href="/profile">Profile</a>
+    <a href="/services">Services</a>
+    <a href="/contactUs">Contact Us</a>
+    <a href="/logout">Logout</a>
+  </div>
+</nav>
+  <div class="container">
+  <!-- Back Button -->
+  <a href="/dashboard" class="back-btn">← Back to Home</a>
+  <div class="x">
+    <h1>Request A Trip</h1>
+
+    <% if (user && user.id) { %>
+      <form id="bookingForm" action="/book-trip" method="POST" class="booking-form">
+
+        <!-- Hidden input for final destination -->
+        <input type="hidden" name="destination" id="route_id" />
+
+        <!-- Local Nigerian Flights -->
+        <div id="localGroup">
+          <label for="localDestination">Local Nigerian Flight:</label>
+          <select name="localDestination" id="localDestination">
+            <option value="">Select local route</option>
+            <option value="PHC → LOS">PHC → LOS</option>
+            <option value="ABV → LOS">ABV → LOS</option>
+            <option value="KAN → LOS">KAN → LOS</option>
+            <option value="ENU → LOS">ENU → LOS</option>
+            <option value="Other">Other</option>
+          </select>
+          <input type="text" id="otherLocal" placeholder="Enter other local route" style="display:none;" />
+        </div>
+
+        <!-- International Flights -->
+        <div id="internationalGroup">
+          <label for="internationalDestination">International Flight:</label>
+          <select name="internationalDestination" id="internationalDestination">
+            <option value="">Select international destination</option>
+            <option value="London">London</option>
+            <option value="Paris">Paris</option>
+            <option value="New York">New York</option>
+            <option value="Qatar">Doha,Qatar</option>
+            <option value="Canada">Ontario, Canada</option>
+            <option value="Other">Other</option>
+          </select>
+          <input type="text" id="otherInternational" placeholder="Enter other international destination" style="display:none;" />
+        </div>
+
+        <label for="date">Date of Travel:</label>
+        <input type="date" name="date" id="date" required />
+
+        <label for="details">Additional Details:</label>
+        <textarea name="details" id="details" rows="3" placeholder="Any extra information..."></textarea>
+
+        <button type="submit">Request A Trip</button>
+      </form>
+      <section class="bookings-list">
+        <h2>Your Requested Trips</h2>
+
+        <% if (bookings.length > 0) { %>
+          <ul class="user-bookings-list">
+            <% bookings.forEach(booking => { %>
+              <li class="booking-item">
+                <div class="booking-header">
+                  <strong class="destination"><%= booking.destination %></strong>
+                  <span class="date"><%= new Date(booking.travel_date).toLocaleDateString() %></span>
+                </div>
+
+                <div class="booking-status">
+                  <% if (booking.status === 'sent') { %>
+                    <span class="badge badge-sent">Sent</span>
+                  <% } else if (booking.status === 'processing') { %>
+                    <span class="badge badge-processing">Processing</span>
+                  <% } else if (booking.status === 'processed') { %>
+                    <span class="badge badge-processed">Processed</span>
+                  <% } else { %>
+                    <span class="badge badge-unknown">Unknown</span>
+                  <% } %>
+                </div>
+
+                <div class="booking-details">
+                  <p><%= booking.details || "No extra details provided." %></p>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="no-bookings">No trips booked yet.</p>
+        <% } %>
+      </section>
+    <% } else { %>
+      <p>Please <a href="/login">log in</a> to book and view your requested trips.</p>
+    <% } %>
+  </div>

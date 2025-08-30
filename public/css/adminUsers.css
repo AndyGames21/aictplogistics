@@ -1,0 +1,197 @@
+/* ===== Base Styles ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 100px 20px 40px; /* Push content below navbar */
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== Navbar Styles ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: whitesmoke;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+}
+
+.brand-name {
+  font-weight: bold;
+  font-size: 18px;
+  color: #333;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #27ae60;
+}
+
+/* ===== Hamburger Menu (Mobile) ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+}
+
+/* ===== Container ===== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding-top: 80px; /* Adjusted to match navbar height */
+}
+
+/* ===== Table Styles ===== */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #a0d6a0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #a0d6a0;
+  color: #000;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background-color: #f5fff5;
+}
+/* Action buttons container */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Shared button style */
+.btn {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+/* Delete button styles */
+.btn.delete {
+  background-color: #e74c3c;
+}
+
+.btn.delete:hover {
+  background-color: #c0392b;
+}
+
+/* Promote button styles */
+.btn.promote {
+  background-color: #3498db;
+}
+
+.btn.promote:hover {
+  background-color: #2980b9;
+}
+
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 60px;
+    right: -100%;
+    background-color: #d3efd3;
+    height: calc(100vh - 60px);
+    width: 200px;
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    transition: right 0.3s ease;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 10px;
+  }
+
+  button {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}

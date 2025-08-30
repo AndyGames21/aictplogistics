@@ -1,0 +1,342 @@
+/* bookings.css */
+
+/* Reset & base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 100px 20px 20px; /* Leave space for fixed navbar */
+}
+
+/* ===== Navigation ===== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-title a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-title a img {
+  width: 50px;
+}
+
+.logo-title a h1 {
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  margin-right: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #2e7d20;
+}
+
+/* ===== Hamburger Menu (mobile only) ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  z-index: 2001;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active div:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active div:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ===== Main content container ===== */
+.container {
+  background-color: #f0fff0;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  width: 100%;
+}
+
+.container h1 {
+  text-align: center;
+  color: #000000;
+  margin-bottom: 25px;
+}
+
+/* ===== Booking Form ===== */
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.booking-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.booking-form select,
+.booking-form input[type="text"],
+.booking-form input[type="date"],
+.booking-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #a0d6a0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.booking-form select:focus,
+.booking-form input:focus,
+.booking-form textarea:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+.booking-form button {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.booking-form button:hover {
+  background-color: #45a049;
+}
+/* ===== User Bookings Page Styles ===== */
+
+/* User Bookings List */
+.user-bookings-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Booking Items */
+.user-bookings-list .booking-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.booking-header .destination {
+  font-weight: bold;
+  color: #34495e;
+}
+.booking-header .date {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* Status Badges */
+.booking-status {
+  margin: 10px 0;
+}
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+}
+.badge-sent {
+  background-color: #f39c12;
+}
+.badge-processing {
+  background-color: #3498db;
+}
+.badge-processed {
+  background-color: #2ecc71;
+}
+.badge-unknown {
+  background-color: #7f8c8d;
+}
+
+/* Booking Details */
+.booking-details {
+  font-style: italic;
+  color: #7f8c8d;
+}
+
+/* Empty State */
+.no-bookings {
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+
+/* ===== Login prompt & Back button ===== */
+.container p {
+  text-align: center;
+  font-size: 16px;
+}
+
+.container p a {
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.container p a:hover {
+  text-decoration: underline;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #66cc66;
+}
+
+/* ===== Responsive styles ===== */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .booking-form button {
+    padding: 10px;
+  }
+
+  .hamburger {
+    display: flex;
+    margin: 0 20px;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    margin: 10px 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 15px;
+  }
+
+  .booking-form select,
+  .booking-form input[type="text"],
+  .booking-form input[type="date"],
+  .booking-form textarea {
+    font-size: 14px;
+  }
+
+  .booking-form button {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+/* ===== Desktop override to fix nav display ===== */
+@media screen and (min-width: 769px) {
+  .nav-links {
+    display: flex !important;
+    position: static;
+    flex-direction: row;
+    box-shadow: none;
+    background: none;
+    padding: 0;
+  }
+
+  .nav-links a {
+    margin: 0 10px;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
