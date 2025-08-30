@@ -209,7 +209,6 @@ app.post('/update-booking/:id', ensureAuthenticated, ensureAdmin, async (req, re
   }
 });
 
-
 // Delete booking
 app.delete('/bookings/:id', ensureAuthenticated, ensureAdmin, async (req, res) => {
   const bookingId = req.params.id;
@@ -217,13 +216,12 @@ app.delete('/bookings/:id', ensureAuthenticated, ensureAdmin, async (req, res) =
     const result = await pool.query('DELETE FROM bookings WHERE id = $1', [bookingId]);
     if (result.rowCount === 0) return res.send("Booking not found.");
 
-    res.send("Booking deleted successfully."); // inline confirmation
+    res.send("Booking deleted successfully.");
   } catch (err) {
     console.error(err);
     res.send("Error deleting booking.");
   }
 });
-
 
 // ===================
 // Book A Trip
@@ -233,7 +231,7 @@ app.post("/book-trip", ensureAuthenticated, async (req, res) => {
   const userId = req.session.user.id;
 
   if (!destination || !travel_date) {
-    return res.json({ success: false, message: "Destination and travel date are required." });
+    return res.send({ success: false, message: "Destination and travel date are required." });
   }
 
   const today = new Date();
@@ -242,7 +240,7 @@ app.post("/book-trip", ensureAuthenticated, async (req, res) => {
   selectedDate.setHours(0, 0, 0, 0);
 
   if (selectedDate < today) {
-    return res.json({ success: false, message: "Travel date cannot be in the past." });
+    return res.send({ success: false, message: "Travel date cannot be in the past." });
   }
 
   try {
@@ -250,12 +248,13 @@ app.post("/book-trip", ensureAuthenticated, async (req, res) => {
       "INSERT INTO bookings (user_id, destination, travel_date, details) VALUES ($1, $2, $3, $4)",
       [userId, destination, travel_date, details]
     );
-    res.json({ success: true, message: "Booking created successfully." });
+    res.send({ success: true, message: "Booking created successfully." });
   } catch (err) {
     console.error("Error creating booking:", err);
-    res.status(500).json({ success: false, message: "Server error while creating booking." });
+    res.status(500).send({ success: false, message: "Server error while creating booking." });
   }
 });
+
 // ===================
 // Authentication Routes
 // ===================
@@ -264,12 +263,12 @@ app.get("/register", (req, res) => res.render("register"));
 app.post("/register", async (req, res) => {
   const { name, email, phone, password } = req.body;
   if (!name || !email || !phone || !password)
-    return res.json({ success: false, message: "All fields required." });
+    return res.send({ success: false, message: "All fields required." });
 
   try {
     const emailCheckResults = await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
     if (emailCheckResults.rows.length > 0)
-      return res.json({ success: false, message: "Email already registered." });
+      return res.send({ success: false, message: "Email already registered." });
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await pool.query(
@@ -277,10 +276,10 @@ app.post("/register", async (req, res) => {
       [name, email, phone, hashedPassword]
     );
 
-    res.json({ success: true, redirect: "/login" });
+    res.send({ success: true, redirect: "/login" });
   } catch (err) {
     console.error(err);
-    res.json({ success: false, message: "Database error." });
+    res.send({ success: false, message: "Database error." });
   }
 });
 
@@ -315,7 +314,6 @@ app.post("/login", async (req, res) => {
     res.send("Server error. Please try again.");
   }
 });
-
 
 // ===================
 // Profile Management
@@ -355,7 +353,6 @@ app.post("/profile/update", ensureAuthenticated, async (req, res) => {
     res.send("Error updating profile.");
   }
 });
-
 
 app.post("/delete-profile", async (req, res) => {
   try {
@@ -427,7 +424,7 @@ app.post("/contactUs", contactLimiter, async (req, res) => {
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
-    return res.status(400).json({ success: false, message: "All fields are required." });
+    return res.status(400).send({ success: false, message: "All fields are required." });
   }
 
   try {
@@ -448,10 +445,10 @@ app.post("/contactUs", contactLimiter, async (req, res) => {
       `,
     });
 
-    res.json({ success: true, message: "Message received! We will get back to you soon." });
+    res.send({ success: true, message: "Message received! We will get back to you soon." });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Server error. Try again later." });
+    res.status(500).send({ success: false, message: "Server error. Try again later." });
   }
 });
 
