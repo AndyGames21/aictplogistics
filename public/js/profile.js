@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!updateForm) return;
 
   updateForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // VERY IMPORTANT: stops form from submitting normally
 
     const formData = {
       name: updateForm.name.value.trim(),
@@ -20,17 +20,21 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(formData)
       });
 
+      // Make sure server always responds with JSON { success, message }
       const data = await res.json();
+
       updateMessage.textContent = data.message;
       updateMessage.style.color = data.success ? 'green' : 'red';
 
       if (data.success) updateForm.password.value = '';
     } catch (err) {
+      console.error(err); // log the actual error
       updateMessage.textContent = 'Error updating profile. Try again later.';
       updateMessage.style.color = 'red';
     }
   });
 });
+
 // Hamburger toggle
 document.addEventListener('DOMContentLoaded', () => {
   const hamburger = document.getElementById('hamburger');
