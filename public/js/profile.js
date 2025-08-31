@@ -20,13 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(formData)
       });
 
-      // Make sure server always responds with JSON { success, message }
       const data = await res.json();
 
       updateMessage.textContent = data.message;
       updateMessage.style.color = data.success ? 'green' : 'red';
-
-      if (data.success) updateForm.password.value = '';
+      if (data.success) {
+        updateForm.name.value = '';
+        updateForm.phone.value = '';
+        updateForm.password.value = '';
+      }
     } catch (err) {
       console.error(err); // log the actual error
       updateMessage.textContent = 'Error updating profile. Try again later.';
