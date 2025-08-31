@@ -450,7 +450,6 @@ app.post("/register", async (req, res) => {
       [name, email, phone, hashedPassword]
     );
 
-    // Return JSON, not redirect
     res.status(200).json({
       success: true,
       message: "Registration successful.",
@@ -511,7 +510,10 @@ app.post("/login", async (req, res) => {
       role: user.role || "user"
     };
 
-    const redirectTo = req.session.returnTo || "/dashboard";
+      res.status(200).json({
+      success: true,
+      redirect: redirectTo
+    });
     delete req.session.returnTo;
 
     res.status(200).redirect(redirectTo);
