@@ -174,7 +174,7 @@ app.get("/bookings", ensureAuthenticated, async (req, res) => {
 
 app.get("/bookingAdmin", ensureAuthenticated, ensureAdmin, async (req, res) => {
   const adminBookingsResults = await pool.query(`
-    SELECT b.id AS booking_id, b.destination, b.departure_date, b.return_date, b.details, b.status, 
+    SELECT b.id AS booking_id, b.destination, b.departure_date, b.return_date,b.travel_class,b.adult_passengers,b.child_passengers, b.additional_details, b.status, 
            u.fullname AS user_name, u.email AS user_email, u.phone AS user_phone
     FROM bookings b
     INNER JOIN users u ON b.user_id = u.id
@@ -186,7 +186,11 @@ app.get("/bookingAdmin", ensureAuthenticated, ensureAdmin, async (req, res) => {
     destination: row.destination,
     departure_date: row.departure_date,
     return_date: row.return_date,
-    details: row.details,
+    flight_time: row.flight_time,
+    travel_class: row.travel_class,
+    adult_passengers: row.adult_passengers,
+    child_passengers: row.child_passengers,
+    details: row.additional_details,
     status: row.status || "sent",
     user: { name: row.user_name, email: row.user_email, phone: row.user_phone },
   }));
@@ -234,8 +238,8 @@ app.post('/update-booking/:id', ensureAuthenticated, ensureAdmin, async (req, re
       subject = `Your Booking is Confirmed`;
       message = `
         <p>Hi ${booking.fullname},</p>
-        <p>Great news! Your booking for <strong>${booking.destination}</strong> on <strong>${new Date(booking.travel_date).toLocaleDateString()}</strong> has been <strong>processed and confirmed</strong>.</p>
-        <p>Thank you for choosing AICTP Logistics. Have a safe trip!</p>
+        <p>Great news! Your booking has been <strong>processed and confirmed</strong>.</p>
+        <p>You will be contacted about your travel details.</p>
         <p>– AICTP Logistics Team</p>
       `;
     }
@@ -276,48 +280,84 @@ app.delete('/bookings/:id', ensureAuthenticated, ensureAdmin, async (req, res) =
 // ===================
 // Create Booking Route
 app.post("/book-trip", ensureAuthenticated, async (req, res) => {
-  const { destination, departure_date, return_date, flight_time, details } = req.body;
-  const userId = req.session.user.id;
-
-  // === Validate required fields ===
-  if (!destination || !departure_date || !flight_time) {
-    return res.json({ success: false, error: "Destination, departure date, and flight time are required." });
-  }
-
   try {
+    const {
+      destination,
+      departure_date,
+      return_date,
+      flight_time,
+      travel_class,
+      adult_passengers,
+      child_passengers,
+      additional_details
+    } = req.body;
+
+    const userId = req.session?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, error: "Unauthorized. Please log in." });
+    }
+
+    // === Validate required fields ===
+    console.log("Incoming booking request body:", req.body);
+    if (!destination || !departure_date || !flight_time || !adult_passengers) {
+      return res.status(400).json({
+        success: false,
+        error: "Destination, departure date, number of passengers, and flight time are required."
+      });
+    }
+
+    // === Validate dates ===
     const today = new Date();
     const depDate = new Date(departure_date);
     const retDate = return_date ? new Date(return_date) : null;
 
     today.setHours(0, 0, 0, 0);
     depDate.setHours(0, 0, 0, 0);
+
     if (depDate < today) {
-      return res.json({ success: false, error: "Departure date cannot be in the past." });
+      return res.status(400).json({ success: false, error: "Departure date cannot be in the past." });
     }
 
     if (retDate && retDate < depDate) {
-      return res.json({ success: false, error: "Return date cannot be earlier than departure date." });
+      return res.status(400).json({ success: false, error: "Return date cannot be earlier than departure date." });
     }
 
     // === Insert booking into DB ===
     const insertQuery = `
-      INSERT INTO bookings (user_id, destination, departure_date, return_date, flight_time, details)
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id, created_at
+      INSERT INTO bookings (
+        user_id, destination, departure_date, return_date,
+        flight_time, travel_class, adult_passengers, child_passengers, additional_details
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      RETURNING id, created_at;
     `;
-    const insertValues = [userId, destination, departure_date, return_date || null, flight_time, details || null];
-    const result = await pool.query(insertQuery, insertValues);
 
-    // === Get user details for email ===
+    const insertValues = [
+      userId,
+      destination.trim(),
+      departure_date,
+      return_date || null,
+      flight_time,
+      travel_class || "economy",
+      parseInt(adult_passengers, 10),
+      parseInt(child_passengers || 0, 10),
+      additional_details?.trim() || null
+    ];
+
+    const { rows } = await pool.query(insertQuery, insertValues);
+    const bookingId = rows[0].id;
+
+    // === Get user details ===
     const userQuery = `SELECT fullname, email FROM users WHERE id = $1`;
     const userResult = await pool.query(userQuery, [userId]);
     const user = userResult.rows[0];
 
     if (!user) {
-      return res.json({ success: false, error: "User not found." });
+      return res.status(404).json({ success: false, error: "User not found." });
     }
 
-    // === Prepare email booking data ===
+    // === Prepare email content ===
     const bookingData = {
       fullname: user.fullname,
       email: user.email,
@@ -325,20 +365,27 @@ app.post("/book-trip", ensureAuthenticated, async (req, res) => {
       departure_date,
       return_date: return_date || "N/A",
       flight_time,
-      details: details || "No additional details provided."
+      travel_class: travel_class || "Economy",
+      adult_passengers: parseInt(adult_passengers, 10),
+      child_passengers: parseInt(child_passengers || 0, 10),
+      details: additional_details?.trim() || "No additional details provided."
     };
 
-    // === Send notification email ===
-    await sendBookingEmail(bookingData);
+    try {
+      await sendBookingEmail(bookingData);
+    } catch (emailErr) {
+      console.error("Failed to send email notification:", emailErr.message);
+    }
 
     // === Return success ===
-    res.json({ success: true, message: "Booking request sent successfully!" });
+    res.json({ success: true, message: "Booking request sent successfully!", bookingId });
 
   } catch (err) {
     console.error("Error creating booking:", err);
     res.status(500).json({ success: false, error: "Server error while creating booking." });
   }
 });
+
 const sendBookingEmail = async (booking) => {
   const subject = `New Booking Request - ${booking.fullname}`;
   const message = `
@@ -348,11 +395,16 @@ const sendBookingEmail = async (booking) => {
     <ul>
       <li><strong>Destination:</strong> ${booking.destination}</li>
       <li><strong>Departure Date:</strong> ${new Date(booking.departure_date).toLocaleDateString()}</li>
-      <li><strong>Return Date:</strong> ${booking.return_date === "N/A" ? "Not specified" : new Date(booking.return_date).toLocaleDateString()}</li>
+      <li><strong>Return Date:</strong> ${
+        booking.return_date === "N/A" ? "Not specified" : new Date(booking.return_date).toLocaleDateString()
+      }</li>
       <li><strong>Flight Time:</strong> ${booking.flight_time}</li>
+      <li><strong>Travel Class:</strong> ${booking.travel_class}</li>
+      <li><strong>Adult Passengers:</strong> ${booking.adult_passengers}</li>
+      <li><strong>Child Passengers:</strong> ${booking.child_passengers}</li>
       <li><strong>Additional Details:</strong> ${booking.details}</li>
     </ul>
-    <p>Check the admin dashboard for more details.</p>
+    <p>Check the admin dashboard.</p>
   `;
 
   await transporter.sendMail({
@@ -362,6 +414,7 @@ const sendBookingEmail = async (booking) => {
     html: message,
   });
 };
+
 
 // ===================
 // Authentication Routes

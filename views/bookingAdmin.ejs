@@ -15,7 +15,12 @@
           <li class="booking-item">
             <div class="booking-header">
               <h3 class="destination"><%= booking.destination %></h3>
-              <span class="date"><%= new Date(booking.travel_date).toLocaleDateString() %></span>
+              <span class="date"><%= new Date(booking.departure_date).toLocaleDateString() %></span>
+              <% if (booking.return_date) { %>
+                <span class="date"><%= new Date(booking.return_date).toLocaleDateString() %></span>
+              <% } %>
+              <span class="class">Class: <%= booking.travel_class %></span>
+              <span class="passengers">Adults: <%= booking.adult_passengers %> | Children: <%= booking.child_passengers %></span>
             </div>
 
             <div class="booking-status">

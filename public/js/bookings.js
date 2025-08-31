@@ -9,9 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
       destination: document.getElementById("destination").value.trim(),
       departure_date: document.getElementById("departureDate").value,
       return_date: document.getElementById("returnDate").value,
+      travel_class: document.getElementById("class").value,
+      adult_passengers: parseInt(document.getElementById("passengers").value, 10),
+      child_passengers: parseInt(document.getElementById("children").value, 10),
       flight_time: document.getElementById("flightTime").value,
-      details: document.getElementById("details").value.trim(),
+      additional_details: document.getElementById("details").value.trim(),
     };
+
+    console.log("Submitting booking:", formData); // Debug line
 
     try {
       const res = await fetch("/book-trip", {
@@ -27,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.success) {
         bookingForm.reset();
+        redirect("/bookings");
       }
     } catch (err) {
       console.error("Booking error:", err);
@@ -34,29 +40,4 @@ document.addEventListener("DOMContentLoaded", () => {
       formMessage.className = "form-message error";
     }
   });
-});
-document.addEventListener("DOMContentLoaded", () => {
-  const hamburger = document.getElementById("hamburger");
-  const navLinks = document.querySelector(".nav-links");
-
-  if (hamburger && navLinks) {
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
-      navLinks.classList.toggle("active");
-      document.body.classList.toggle("menu-open");
-    });
-  }});
-// Close nav on link click (for mobile)
-document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', () => {
-    hamburger.classList.remove('active');
-    navLinks.classList.remove('active');
-  });
-});
-// Close nav on outside click
-document.addEventListener('click', (e) => {
-  if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-    hamburger.classList.remove('active');
-    navLinks.classList.remove('active');
-  }
 });

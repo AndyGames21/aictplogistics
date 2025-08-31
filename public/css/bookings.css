@@ -47,13 +47,13 @@ nav {
   font-size: 1.2rem;
   color: #333;
   font-weight: bold;
-  font-family: "Algerian", sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .nav-links {
   display: flex;
   gap: 15px;
-  margin-right: 20px;
+  margin-right: 25px;
 }
 
 .nav-links a {
@@ -141,47 +141,72 @@ nav {
 }
 
 /* === Booking Form === */
+/* Booking Form Container */
 .booking-form {
-  background: #fff;
+  max-width: 600px;
+  margin: 20px auto;
   padding: 20px;
-  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  font-family: Arial, sans-serif;
 }
 
+/* Labels */
 .booking-form label {
   display: block;
-  margin: 15px 0 5px;
+  margin-bottom: 6px;
   font-weight: bold;
-  font-size: 0.95rem;
+  color: #333;
+  font-size: 14px;
 }
 
+/* Inputs, Selects, Textareas */
 .booking-form input,
-.booking-form textarea,
-.booking-form button {
+.booking-form select,
+.booking-form textarea {
   width: 100%;
   padding: 10px;
-  font-size: 1rem;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 14px;
   box-sizing: border-box;
+  transition: border-color 0.3s;
 }
 
-.booking-form textarea {
-  resize: none;
+/* Hover and Focus Effects */
+.booking-form input:focus,
+.booking-form select:focus,
+.booking-form textarea:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
+/* Submit Button */
 .booking-form button {
-  background: #2e7d20;
-  color: white;
+  width: 100%;
+  padding: 12px;
+  background-color: #2e7d20;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
   border: none;
-  margin-top: 15px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .booking-form button:hover {
-  background: #3d9c0a;
+  background-color: #3d9c0a;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .booking-form {
+    padding: 15px;
+  }
 }
 
 /* Inline message */

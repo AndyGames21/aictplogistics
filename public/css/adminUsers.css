@@ -14,124 +14,11 @@ body {
   justify-content: center;
 }
 
-/* ===== Navbar Styles ===== */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: whitesmoke;
-  padding: 10px 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-}
-
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.logo {
-  height: 40px;
-  width: auto;
-}
-
-.brand-name {
-  font-weight: bold;
-  font-size: 18px;
-  color: #333;
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 25px;
-}
-
-.nav-links li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
-.nav-links li a:hover {
-  color: #27ae60;
-}
-/* === Hamburger Menu === */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  z-index: 2001;
-}
-
-.hamburger div {
-  width: 25px;
-  height: 3px;
-  background-color: #333;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.hamburger.active div:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.active div:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active div:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
-}
-
-/* Mobile Navbar */
-@media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-    margin: 0 20px;
-  }
-
-  .nav-links {
-    position: absolute;
-    top: 70px;
-    right: 0;
-    flex-direction: column;
-    width: 200px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    display: none;
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .nav-links a {
-    margin: 10px 0;
-    font-style: bold;
-  }
-}
-
-
 /* ===== Container ===== */
 .container {
   width: 100%;
   max-width: 1200px;
-  padding-top: 80px; /* Adjusted to match navbar height */
+  padding-top: 30px; /* Adjusted to match navbar height */
 }
 
 /* ===== Table Styles ===== */
@@ -200,28 +87,7 @@ tbody tr:hover {
 
 
 /* ===== Responsive Adjustments ===== */
-@media (max-width: 768px) {
-  .nav-links {
-    position: fixed;
-    top: 60px;
-    right: -100%;
-    background-color: #d3efd3;
-    height: calc(100vh - 60px);
-    width: 200px;
-    flex-direction: column;
-    padding: 20px;
-    gap: 15px;
-    transition: right 0.3s ease;
-  }
-
-  .nav-links.active {
-    right: 0;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
+@media screen and (max-width: 768px) {
   .container {
     padding: 20px;
   }

@@ -1,54 +1,32 @@
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Management | AICTP Logistics</title>
-  <link rel="stylesheet" href="/css/adminUsers.css" />
-  <link rel="shortcut icon" href="/images/logo.jpg" type="image/x-icon" />
-  <% if (user && user.role === 'admin') { %>
-  <nav class="navbar">
-    <a href="/" class="logo-link"><div class="logo-section">
-      <img src="/images/logo.jpg" alt="AICTP Logo" class="logo" />
-      <span class="brand-name">AICTP Logistics</span>
-    </div>
-    </a>
+<%- include('partials/header') %>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>User Management | AICTP Logistics</title>
+<link rel="stylesheet" href="/css/adminUsers.css" />
+<link rel="shortcut icon" href="/images/logo.jpg" type="image/x-icon" />
 
-    <div class="hamburger" id="hamburger">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-
-    <ul class="nav-links" id="navLinks">
-      <li><a href="/dashboard">Dashboard</a></li>
-      <li><a href="/bookingAdmin">All Bookings</a></li>
-      <li><a href="/logout">Logout</a></li>
-      <li><a href="/services">Services</a></li>
-      <li><a href="/contact">Contact Us</a></li>
-    </ul>
-  </nav>
-  <% } %>
-
-  <div class="container">
-    <div class="table-responsive">
-      <h2>User Management</h2>
-      <table>
-        <thead>
+<div class="container">
+  <div class="table-responsive">
+    <h2>User Management</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fullname</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
           <tr>
-            <th>ID</th>
-            <th>Fullname</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% users.forEach(user => { %>
-            <tr>
-              <td><%= user.id %></td>
-              <td><%= user.fullname %></td>
-              <td><%= user.email %></td>
-              <td><%= user.phone %></td>
-              <td><%= user.role %></td>
+            <td><%= user.id %></td>
+            <td><%= user.fullname %></td>
+            <td><%= user.email %></td>
+            <td><%= user.phone %></td>
+            <td><%= user.role %></td>
             <td>
               <% if (user.role !== 'admin') { %>
                 <div class="action-buttons">
@@ -63,13 +41,17 @@
                   </form>
                 </div>
               <% } else { %>
-                <em>Admin</em>
+                <!-- Demote Button -->
+                <form method="POST" action="/demote-user/<%= user.id %>" onsubmit="return confirm('Are you sure you want to demote this user?');">
+                  <button type="submit" class="btn demote">Demote</button>
+                </form>
               <% } %>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
   </div>
+</div>
+
 <script src="/js/adminUsers.js" defer></script>
