@@ -510,22 +510,22 @@ app.post("/login", async (req, res) => {
       role: user.role || "user"
     };
 
-      res.status(200).json({
+    const redirectTo = req.session.returnTo || "/dashboard";
+    delete req.session.returnTo;
+
+    res.status(200).json({
       success: true,
       redirect: redirectTo
     });
-    delete req.session.returnTo;
 
-    res.status(200).redirect(redirectTo);
   } catch (error) {
     console.error(error);
-    res.json({
+    res.status(500).json({
       success: false,
       message: "Server error. Please try again."
     });
   }
 });
-
 
   // ===================
   // Profile Management
