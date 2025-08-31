@@ -494,7 +494,6 @@ app.post("/login", async (req, res) => {
     // Always respond with JSON
     res.status(200).json({
       success: true,
-      redirect: redirectTo
     });
   } catch (error) {
     console.error(error);
