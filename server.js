@@ -448,15 +448,15 @@
   app.get("/login", (req, res) => res.render("login"));
   app.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    if (!email || !password) return res.send("Both email and password are required.");
+    if (!email || !password) return res.status(400).json({ error: "Both email and password are required." });
 
     try {
       const result = await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
-      if (result.rows.length === 0) return res.send("Invalid email or password.");
+      if (result.rows.length === 0) return res.status(401).json({ error: "Invalid email or password." });
 
       const user = result.rows[0];
       const passwordMatches = await bcrypt.compare(password, user.password);
-      if (!passwordMatches) return res.send("Invalid email or password.");
+      if (!passwordMatches) return res.status(401).json({ error: "Invalid email or password." });
 
       req.session.user = {
         id: user.id,
@@ -472,7 +472,7 @@
 
     } catch (error) {
       console.error(error);
-      res.send("Server error. Please try again.");
+      res.status(500).json("Server error. Please try again.");
     }
   });
 

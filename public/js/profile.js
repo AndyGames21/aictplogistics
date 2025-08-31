@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (password && password !== confirmPassword) {
       updateMessage.textContent = "Passwords do not match.";
       updateMessage.style.color = "red";
+      updateButton.disabled = false;
+      updateButton.textContent = "Update Profile";
       return;
     }
 
@@ -45,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateForm.phone.value = '';
         updateForm.password.value = '';
         if (updateForm.confirmPassword) updateForm.confirmPassword.value = '';
-
+        updateButton.disabled = false;
+        updateButton.textContent = "Update Profile";
         setTimeout(() => {
           location.reload();
         }, 1000);
