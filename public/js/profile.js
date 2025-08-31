@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const updateButton = document.getElementById('updateProfileButton');
   const updateForm = document.getElementById('updateProfileForm');
   const updateMessage = document.getElementById('updateMessage');
 
@@ -6,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+  if (updateButton.disabled) return;
+  updateButton.disabled = true;
+  updateButton.textContent = "Updating...";
 
     const name = updateForm.name.value.trim();
     const email = updateForm.email.value.trim();
@@ -47,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } catch (err) {
       console.error(err);
+      updateButton.disabled = false;
+      updateButton.textContent = "Update Profile";
       updateMessage.textContent = 'Error updating profile. Try again later.';
       updateMessage.style.color = 'red';
     }

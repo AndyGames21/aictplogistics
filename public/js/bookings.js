@@ -1,9 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   const bookingForm = document.getElementById("bookingForm");
   const formMessage = document.getElementById("formMessage");
+  const submitButton = document.getElementById("submitBookingButton");
 
   bookingForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    if (submitButton.disabled) return;
+    submitButton.disabled = true;
+    submitButton.textContent = "Booking...";
 
     const formData = {
       destination: document.getElementById("destination").value.trim(),
@@ -38,6 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Booking error:", err);
       formMessage.textContent = "Error submitting booking. Please try again.";
       formMessage.className = "form-message error";
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Book Now";
     }
   });
 });

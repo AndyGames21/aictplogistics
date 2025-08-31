@@ -482,7 +482,6 @@
 app.get("/profile", ensureAuthenticated, (req, res) => {
   res.render("profile", { user: req.session.user });
 });
-
 app.post("/profile/update", ensureAuthenticated, async (req, res) => {
   const { name, phone, email, password } = req.body;
   const userId = req.session.user.id;
