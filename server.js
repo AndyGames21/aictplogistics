@@ -491,10 +491,7 @@ app.post("/login", async (req, res) => {
     const redirectTo = req.session.returnTo || "/dashboard";
     delete req.session.returnTo;
 
-    // Always respond with JSON
-    res.status(200).json({
-      success: true,
-    });
+    res.status(200).redirect(redirectTo);
   } catch (error) {
     console.error(error);
     res.status(500).json({
