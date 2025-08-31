@@ -5,13 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!updateForm) return;
 
   updateForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // VERY IMPORTANT: stops form from submitting normally
+    e.preventDefault();
 
-    const formData = {
-      name: updateForm.name.value.trim(),
-      phone: updateForm.phone.value.trim(),
-      password: updateForm.password.value.trim()
-    };
+    const name = updateForm.name.value.trim();
+    const email = updateForm.email.value.trim();
+    const phone = updateForm.phone.value.trim();
+    const password = updateForm.password.value.trim();
+    const confirmPassword = updateForm.confirmPassword?.value.trim(); // optional chaining in case field exists
+
+    // Confirm password validation
+    if (password && password !== confirmPassword) {
+      updateMessage.textContent = "Passwords do not match.";
+      updateMessage.style.color = "red";
+      return;
+    }
+
+    const formData = { name, email, phone, password };
 
     try {
       const res = await fetch('/profile/update', {
@@ -24,18 +33,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
       updateMessage.textContent = data.message;
       updateMessage.style.color = data.success ? 'green' : 'red';
+
       if (data.success) {
         updateForm.name.value = '';
+        updateForm.email.value = '';
         updateForm.phone.value = '';
         updateForm.password.value = '';
+        if (updateForm.confirmPassword) updateForm.confirmPassword.value = '';
+
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       }
     } catch (err) {
-      console.error(err); // log the actual error
+      console.error(err);
       updateMessage.textContent = 'Error updating profile. Try again later.';
       updateMessage.style.color = 'red';
     }
   });
 });
+
 
 // Hamburger toggle
 document.addEventListener('DOMContentLoaded', () => {
