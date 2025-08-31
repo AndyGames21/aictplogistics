@@ -420,29 +420,52 @@
   // Authentication Routes
   // ===================
   app.get("/register", (req, res) => res.render("register"));
+app.post("/register", async (req, res) => {
+  const { name, email, phone, password } = req.body;
 
-  app.post("/register", async (req, res) => {
-    const { name, email, phone, password } = req.body;
-    if (!name || !email || !phone || !password)
-      return res.status(400).json({ error: "All fields required." });
+  if (!name || !email || !phone || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required."
+    });
+  }
 
-    try {
-      const emailCheckResults = await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
-      if (emailCheckResults.rows.length > 0)
-        return res.json({ error: "Email already registered." });
+  try {
+    const emailCheckResults = await pool.query(
+      "SELECT * FROM users WHERE email = $1 LIMIT 1",
+      [email]
+    );
 
-      const hashedPassword = await bcrypt.hash(password, 10);
-      await pool.query(
-        "INSERT INTO users (fullname, email, phone, password) VALUES ($1, $2, $3, $4)",
-        [name, email, phone, hashedPassword]
-      );
-
-      res.redirect("/login");
-    } catch (err) {
-      console.error(err);
-      res.json({ error: "Database error." });
+    if (emailCheckResults.rows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is already registered."
+      });
     }
-  });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await pool.query(
+      "INSERT INTO users (fullname, email, phone, password) VALUES ($1, $2, $3, $4)",
+      [name, email, phone, hashedPassword]
+    );
+
+    // Return JSON, not redirect
+    res.status(200).json({
+      success: true,
+      message: "Registration successful.",
+      redirect: "/login"
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Database error. Please try again later."
+    });
+  }
+});
+
 
   // Login
 app.get("/login", (req, res) => res.render("login"));
