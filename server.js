@@ -445,36 +445,66 @@
   });
 
   // Login
-  app.get("/login", (req, res) => res.render("login"));
-  app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: "Both email and password are required." });
+app.get("/login", (req, res) => res.render("login"));
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-    try {
-      const result = await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
-      if (result.rows.length === 0) return res.status(401).json({ error: "Invalid email or password." });
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Both email and password are required."
+    });
+  }
 
-      const user = result.rows[0];
-      const passwordMatches = await bcrypt.compare(password, user.password);
-      if (!passwordMatches) return res.status(401).json({ error: "Invalid email or password." });
+  try {
+    const result = await pool.query(
+      "SELECT * FROM users WHERE email = $1 LIMIT 1",
+      [email]
+    );
 
-      req.session.user = {
-        id: user.id,
-        name: user.fullname,
-        email: user.email,
-        phone: user.phone,
-        role: user.role || "user",
-      };
-
-      const redirectTo = req.session.returnTo || "/dashboard";
-      delete req.session.returnTo;
-      res.redirect(redirectTo);
-
-    } catch (error) {
-      console.error(error);
-      res.status(500).json("Server error. Please try again.");
+    if (result.rows.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password."
+      });
     }
-  });
+
+    const user = result.rows[0];
+    const passwordMatches = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatches) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password."
+      });
+    }
+
+    // Save user session
+    req.session.user = {
+      id: user.id,
+      name: user.fullname,
+      email: user.email,
+      phone: user.phone,
+      role: user.role || "user"
+    };
+
+    const redirectTo = req.session.returnTo || "/dashboard";
+    delete req.session.returnTo;
+
+    // Always respond with JSON
+    res.status(200).json({
+      success: true,
+      redirect: redirectTo
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server error. Please try again."
+    });
+  }
+});
+
 
   // ===================
   // Profile Management

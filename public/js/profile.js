@@ -8,17 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
   updateForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-  if (updateButton.disabled) return;
-  updateButton.disabled = true;
-  updateButton.textContent = "Updating...";
+    if (updateButton.disabled) return;
+    updateButton.disabled = true;
+    updateButton.textContent = "Updating...";
+    updateMessage.textContent = "";
+    updateMessage.style.color = "";
 
     const name = updateForm.name.value.trim();
     const email = updateForm.email.value.trim();
     const phone = updateForm.phone.value.trim();
     const password = updateForm.password.value.trim();
-    const confirmPassword = updateForm.confirmPassword?.value.trim(); // optional chaining in case field exists
+    const confirmPassword = updateForm.confirmPassword?.value.trim();
 
-    // Confirm password validation
+    // Validate: at least one field
+    if (!name && !email && !phone && !password) {
+      updateMessage.textContent = "Please fill in at least one field.";
+      updateMessage.style.color = "red";
+      updateButton.disabled = false;
+      updateButton.textContent = "Update Profile";
+      return;
+    }
+
+    // Validate password confirmation
     if (password && password !== confirmPassword) {
       updateMessage.textContent = "Passwords do not match.";
       updateMessage.style.color = "red";
@@ -27,13 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const formData = { name, email, phone, password };
-
     try {
       const res = await fetch('/profile/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ name, email, phone, password })
       });
 
       const data = await res.json();
@@ -41,65 +50,44 @@ document.addEventListener('DOMContentLoaded', () => {
       updateMessage.textContent = data.message;
       updateMessage.style.color = data.success ? 'green' : 'red';
 
+      updateButton.disabled = false;
+      updateButton.textContent = "Update Profile";
+
       if (data.success) {
-        updateForm.name.value = '';
-        updateForm.email.value = '';
-        updateForm.phone.value = '';
-        updateForm.password.value = '';
-        if (updateForm.confirmPassword) updateForm.confirmPassword.value = '';
-        updateButton.disabled = false;
-        updateButton.textContent = "Update Profile";
-        setTimeout(() => {
-          location.reload();
-        }, 1000);
+        updateForm.reset();
+        setTimeout(() => location.reload(), 1000);
       }
     } catch (err) {
       console.error(err);
+      updateMessage.textContent = "Error updating profile. Try again later.";
+      updateMessage.style.color = "red";
       updateButton.disabled = false;
       updateButton.textContent = "Update Profile";
-      updateMessage.textContent = 'Error updating profile. Try again later.';
-      updateMessage.style.color = 'red';
     }
   });
-});
 
-
-// Hamburger toggle
-document.addEventListener('DOMContentLoaded', () => {
+  // Hamburger toggle
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
 
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navLinks.classList.toggle('active');
-  });
-
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      navLinks.classList.remove('active');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('active');
     });
-  });
 
-  document.addEventListener('click', (e) => {
-    if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-      hamburger.classList.remove('active');
-      navLinks.classList.remove('active');
-    }
-  });
-});
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
 
-// Close nav on link click (for mobile)
-document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', () => {
-    hamburger.classList.remove('active');
-    navLinks.classList.remove('active');
-  });
-});
-// Close nav on outside click
-document.addEventListener('click', (e) => {
-  if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-    hamburger.classList.remove('active');
-    navLinks.classList.remove('active');
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('active');
+      }
+    });
   }
 });

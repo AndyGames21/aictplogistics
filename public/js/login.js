@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const button = document.getElementById('loginBtn');
   const errorMsg = document.getElementById('error-message');
 
+  if (!form) return;
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorMsg.textContent = '';
@@ -14,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
 
+    // Frontend validation for empty fields
     if (!email || !password) {
       errorMsg.textContent = 'Please fill in both email and password.';
       button.disabled = false;
@@ -45,3 +48,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+// Hamburger toggle
