@@ -429,7 +429,7 @@
     try {
       const emailCheckResults = await pool.query("SELECT * FROM users WHERE email = $1 LIMIT 1", [email]);
       if (emailCheckResults.rows.length > 0)
-        return res.status(400).json({ error: "Email already registered." });
+        return res.json({ error: "Email already registered." });
 
       const hashedPassword = await bcrypt.hash(password, 10);
       await pool.query(
@@ -440,7 +440,7 @@
       res.redirect("/login");
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Database error." });
+      res.json({ error: "Database error." });
     }
   });
 
@@ -463,7 +463,7 @@ app.post("/login", async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Invalid email or password."
       });
@@ -473,7 +473,7 @@ app.post("/login", async (req, res) => {
     const passwordMatches = await bcrypt.compare(password, user.password);
 
     if (!passwordMatches) {
-      return res.status(401).json({
+      return res.json({
         success: false,
         message: "Invalid email or password."
       });
@@ -494,7 +494,7 @@ app.post("/login", async (req, res) => {
     res.status(200).redirect(redirectTo);
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Server error. Please try again."
     });
