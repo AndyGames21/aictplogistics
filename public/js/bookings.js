@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
   const bookingForm = document.getElementById("bookingForm");
   const formMessage = document.getElementById("formMessage");
   const submitButton = document.getElementById("submitBookingButton");
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (submitButton.disabled) return;
     submitButton.disabled = true;
-    submitButton.textContent = "Booking...";
+    submitButton.textContent = "Requesting...";
 
     const formData = {
       destination: document.getElementById("destination").value.trim(),
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       additional_details: document.getElementById("details").value.trim(),
     };
 
-    console.log("Submitting booking:", formData); // Debug line
+    console.log("Submitting booking:", formData);
 
     try {
       const res = await fetch("/book-trip", {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.success) {
         bookingForm.reset();
-        redirect("/bookings");
+        window.location.href = "/bookings";
       }
     } catch (err) {
       console.error("Booking error:", err);
