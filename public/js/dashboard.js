@@ -44,10 +44,15 @@
   // Contact Form
   const contactForm = document.getElementById("contactForm");
   const formMessage = document.getElementById("formMessage");
+  const submitButton = document.getElementById("submitContactButton");
 
   if (contactForm) {
     contactForm.addEventListener("submit", async (e) => {
-      e.preventDefault(); // stop default form submission
+      e.preventDefault(); 
+
+      if (submitButton.disabled) return;
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending...";
 
       const formData = {
         name: contactForm.name.value.trim(),
@@ -75,6 +80,9 @@
         console.error("Contact form error:", err);
         formMessage.textContent = "Error sending message. Try again later.";
         formMessage.style.color = "red";
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Send Message";
       }
     });
   }
