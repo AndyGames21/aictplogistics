@@ -262,8 +262,22 @@ body.menu-open {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
+  align-items: stretch; 
 }
 
+.services-grid .service-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; 
+}
+
+@media (min-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(auto-fill, 300px);
+    justify-content: center;
+  }
+}
 .service-card {
   background-color: #ffffff;
   border: 1px solid #2e7d20;
@@ -401,7 +415,7 @@ body.menu-open {
 
   .carousel-item .overlay p {
     font-size: 12px;
-  }
+  } 
 }
 /* =========================
    SECTION DEMARCATORS
