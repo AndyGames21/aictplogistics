@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /bookingAdmin
+Disallow: /userAdmin
+
+Sitemap: https://aictp.com.ng/sitemap.xml

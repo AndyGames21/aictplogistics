@@ -1,0 +1,448 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #f5fdf5;
+  color: #000;
+  overflow-x: hidden;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+/* Container */
+.container {
+  width: 90%;
+  margin: 100px auto 0;
+  text-align: center;
+}
+
+.container h2 {
+  font-size: 2.5rem;
+}
+
+.container p {
+  font-size: 1.2rem;
+}
+
+/* Carousel */
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  margin: 40px auto;
+  border-radius: 10px;
+  max-width: 1200px; /* Bigger width for desktop */
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+  min-width: 100%;
+  position: relative;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 600px; /* Increased height for a bigger look */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.carousel-item .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45); /* Dark shadow effect */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  color: white;
+  border-radius: 10px;
+}
+
+.carousel-item .overlay h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.carousel-item .overlay p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.carousel-item .overlay .cta-btn {
+  padding: 12px 24px;
+  background: #2e7d20;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.carousel-item .overlay .cta-btn:hover {
+  background: #1b5e20;
+}
+.carousel-item .overlay .cta-btn {
+  padding: 12px 24px;
+  background: #2e7d20;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.carousel-item .overlay .cta-btn:hover {
+  background: #1b5e20;
+}
+
+/* Carousel Buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn.left {
+  left: 20px;
+}
+
+.carousel-btn.right {
+  right: 20px;
+}
+
+.carousel-btn:hover {
+  background: rgba(138, 130, 130, 0.9);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .carousel-item img {
+    height: 400px;
+  }
+  .carousel-item .overlay h2 {
+    font-size: 22px;
+  }
+  .carousel-item .overlay p {
+    font-size: 14px;
+  }
+}
+/* === Bookings List === */
+.bookings-list {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bookings-list h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+}
+
+.user-bookings-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+.booking-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background: #fafafa;
+  transition: box-shadow 0.3s ease;
+}
+
+.booking-item:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.booking-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.booking-header .destination {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.booking-header .date,
+.booking-header .time {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.badge-sent {
+  background: #3498db;
+  color: white;
+}
+
+.badge-processing {
+  background: #f1c40f;
+  color: white;
+}
+
+.badge-processed {
+  background: #2ecc71;
+  color: white;
+}
+
+.badge-unknown {
+  background: #7f8c8d;
+  color: white;
+}
+
+/* No bookings message */
+.no-bookings {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ===== Services Section ===== */
+.services-section {
+  margin: 60px auto;
+  text-align: center;
+}
+
+.services-section h2 {
+  font-size: 2.2rem;
+  color: #2e7d20;
+  margin-bottom: 30px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  align-items: stretch; 
+}
+
+.services-grid .service-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; 
+}
+
+@media (min-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(auto-fill, 300px);
+    justify-content: center;
+  }
+}
+.service-card {
+  background-color: #ffffff;
+  border: 1px solid #2e7d20;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.service-card img.service-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.service-card h3 {
+  font-size: 1.3rem;
+  margin: 15px 0 10px;
+  color: #2e7d20;
+}
+
+.service-card p {
+  font-size: 1rem;
+  padding: 0 15px 20px;
+  color: #000;
+  line-height: 1.4;
+}
+.service-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+ /* Contact Us Section Styles */
+  .contact-section {
+    padding: 60px 20px;
+    background: #f5fdf5;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .contact-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .contact-section p {
+    color: #555;
+    margin-bottom: 40px;
+    font-size: 1rem;
+  }
+
+  .contact-section .container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .contact-section .form-group {
+    margin-bottom: 20px;
+  }
+
+  .contact-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .contact-section input,
+  .contact-section textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    resize: vertical;
+  }
+
+  .contact-section button {
+    padding: 12px 30px;
+    border: none;
+    background: #2e7d20;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .contact-section button:hover {
+    background: #73f894;
+  }
+
+  #formMessage {
+    margin-top: 15px;
+    font-weight: bold;
+  } 
+/* ============================
+   Responsive Media Queries
+============================ */
+
+/* For tablets and below */
+@media (max-width: 1024px) {
+  .carousel-item img {
+    height: 450px;
+  }
+  /* Carousel adjusts */
+  .carousel-item img {
+    height: 350px;
+  }
+
+  .carousel-item .overlay h2 {
+    font-size: 20px;
+  }
+
+  .carousel-item .overlay p {
+    font-size: 14px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .carousel-item img {
+    height: 250px;
+  }
+
+  .carousel-item .overlay h2 {
+    font-size: 18px;
+  }
+
+  .carousel-item .overlay p {
+    font-size: 12px;
+  } 
+}
+/* =========================
+   SECTION DEMARCATORS
+========================= */
+
+/* Add a subtle top and bottom border for each main section */
+section {
+  position: relative;
+  padding: 60px 20px;
+  margin: 40px 0;
+  border-top: 4px solid #2e7d20;   /* Green line at top */
+  border-bottom: 4px solid #2e7d20; /* Green line at bottom */
+  border-radius: 8px;
+  background: #f9fff9; /* Slightly lighter than body */
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Optional hover effect to highlight section when scrolling over it */
+section:hover {
+  background: #f1fff1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Specific adjustment for sections that already have their own styles */
+.bookings-list, .contact-section {
+  border-top: 4px solid #2e7d20;
+  border-bottom: 4px solid #2e7d20;
+  border-radius: 10px;
+}

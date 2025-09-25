@@ -1,0 +1,116 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>Request A Booking | AICTP Logistics LTD</title>
+<link rel="stylesheet" href="/css/bookings.css" />
+<link rel="icon" type="image/x-icon" href="/images/logo.jpg" />
+
+<!-- Navbar -->
+<nav>
+  <div class="logo-title">
+    <a href="/" class="logo-link">
+      <img src="/images/logo.jpg" alt="AICTP Logo" />
+      <h1>AICTP Logistics</h1>
+    </a>
+  </div>
+
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <div class="nav-links" id="navLinks">
+    <a href="/profile">Profile</a>
+    <a href="/services">Services</a>
+    <a href="/contactUs">Contact Us</a>
+    <a href="/logout">Logout</a>
+  </div>
+</nav>
+
+<div class="container">
+  <a href="/dashboard" class="back-btn">← Back to Home</a>
+  <div class="x">
+    <h1>Request A Trip</h1>
+
+    <% if (user && user.id) { %>
+<form id="bookingForm" class="booking-form">
+  <label for="Origin">Origin:
+  <input type="text" name="Origin" id="origin" placeholder="Enter Origin" required="required"></label>
+
+  <label for="destination">Destination:</label>
+  <input type="text" name="destination" id="destination" placeholder="Enter destination" required />
+
+  <label for="departureDate">Departure Date:</label>
+  <input type="date" name="departure_date" id="departureDate" required />
+
+  <label for="returnDate">Return Date:</label>
+  <input type="date" name="return_date" id="returnDate" />
+
+  <label for="flightTime">Time of Flight:</label>
+  <select name="flight_time" id="flightTime" required>
+    <option value="Morning">Morning</option>
+    <option value="Afternoon">Afternoon</option>
+    <option value="Evening">Evening</option>
+  </select>
+
+  <label for="class">Class:</label>
+  <select name="travel_class" id="class" required>
+    <option value="Economy">Economy</option>
+    <option value="Business">Business Class</option>
+  </select>
+
+  <label for="passengers">Number of Adult Passengers:</label>
+  <input type="number" name="adult_passengers" id="passengers" min="1" value="1" required />
+
+  <label for="children">Number of Child Passengers:</label>
+  <input type="number" name="child_passengers" id="children" min="0" value="0" required />
+
+  <label for="details">Additional Details:</label>
+  <textarea name="additional_details" id="details" rows="3" placeholder="Any extra information..."></textarea>
+
+  <button type="submit" id="submitBookingButton">Request A Trip</button>
+  <p id="formMessage" class="form-message"></p>
+</form>
+
+      <section class="bookings-list">
+        <h2>Your Requested Trips</h2>
+
+        <% if (bookings.length > 0) { %>
+          <ul class="user-bookings-list">
+            <% bookings.forEach(booking => { %>
+              <li class="booking-item">
+                <div class="booking-header">
+                  <strong class="destination">From <%= booking.origin %> To <%= booking.destination %></strong>
+                  <span class="date">Depart: <%= new Date(booking.departure_date).toLocaleDateString() %> | Return: <%= new Date(booking.return_date).toLocaleDateString() %></span>
+                  <span class="time">Time: <%= booking.flight_time %></span>
+                </div>
+                <div class="booking-status">
+                  <% if (booking.status === 'sent') { %>
+                    <span class="badge badge-sent">Sent</span>
+                  <% } else if (booking.status === 'processing') { %>
+                    <span class="badge badge-processing">Processing</span>
+                  <% } else if (booking.status === 'processed') { %>
+                    <span class="badge badge-processed">Processed</span>
+                  <% } else { %>
+                    <span class="badge badge-unknown">Unknown</span>
+                  <% } %>
+                  <span class="class">Class: <%= booking.travel_class %></span>
+                  <span class="passengers">Adults: <%= booking.adult_passengers %> | Children: <%= booking.child_passengers %></span>
+                </div>
+                <div class="booking-details">
+                  <p><%= booking.additional_details || "No extra details provided." %></p>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <p class="no-bookings">No trips booked yet.</p>
+        <% } %>
+      </section>
+    <% } else { %>
+      <p>Please <a href="/login">log in</a> to book and view your requested trips.</p>
+    <% } %>
+  </div>
+</div>
+<script defer src="/js/bookings.js"></script>

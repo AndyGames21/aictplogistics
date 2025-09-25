@@ -1,0 +1,132 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/dashboard.css">
+  
+<!-- Greeting -->
+<section id="home" class="container">
+  <h2>
+    <% if (user) { %>
+      <%= greeting %>, <%= user.name %>!
+    <% } else { %>
+      <%= greeting %>!
+    <% } %>
+  </h2>
+  <p>Explore the best travel deals and book your next adventure.</p>
+</section>
+
+<!-- Carousel -->
+<div class="carousel-container">
+  <button class="carousel-btn left">&#10094;</button>
+  <div class="carousel-track">
+    <% slides.forEach(slide => { %>
+      <div class="carousel-item">
+        <img src="/images/<%= slide.img %>" alt="<%= slide.title %>" />
+        <div class="overlay">
+          <h2><%= slide.title %></h2>
+          <p><%= slide.text %></p>
+          <% if (user) { %>
+            <a href="/bookings" class="cta-btn">Book Now</a>
+          <% } else { %>
+            <a href="/login?returnTo=/bookings" class="cta-btn">Book Now</a>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <button class="carousel-btn right">&#10095;</button>
+</div>
+
+<!-- Services Section -->
+<section class="container services-section" id="services">
+  <h2>Our Services</h2>
+  <div class="services-grid">
+    <% services.forEach((service, index) => { %>
+      <a href="<%= service.link %>" class="service-link">
+        <div class="service-card">
+          <img src="/images/services<%= index + 1 %>.jpg" alt="<%= service.title %>" class="service-image" />
+          <h3><%= service.title %></h3>
+          <p><%= service.description %></p>
+        </div>
+      </a>
+    <% }); %>
+  </div>
+</section>
+
+<!-- Bookings -->
+<% if (user) { %>
+  <section class="bookings-list">
+    <h2>Your Requested Trips</h2>
+
+    <% if (bookings.length > 0) { %>
+      <ul class="user-bookings-list">
+        <% bookings.forEach(booking => { %>
+          <li class="booking-item">
+            <div class="booking-header">
+              <strong class="destination">From <%= booking.origin %> To <%= booking.destination %></strong>
+              <span class="date">
+                Depart: <%= new Date(booking.departure_date).toLocaleDateString() %>
+                <% if (booking.return_date) { %>
+                  | Return: <%= new Date(booking.return_date).toLocaleDateString() %>
+                <% } %>
+              </span>
+              <span class="time">Time: <%= booking.flight_time %></span>
+            </div>
+            <div class="booking-status">
+              <% if (booking.status === 'sent') { %>
+                <span class="badge badge-sent">Sent</span>
+              <% } else if (booking.status === 'processing') { %>
+                <span class="badge badge-processing">Processing</span>
+              <% } else if (booking.status === 'processed') { %>
+                <span class="badge badge-processed">Processed</span>
+              <% } else { %>
+                <span class="badge badge-unknown">Unknown</span>
+              <% } %>
+            </div>
+            <div class="booking-details">
+              <% if (booking.additional_details) { %>
+                <p><%= booking.additional_details %></p>
+              <% } else { %>
+                <p>No extra details provided.</p>
+              <% } %>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="no-bookings">No trips booked yet.</p>
+    <% } %>
+  </section>
+<% } else { %>
+  <p>Please <a href="/login">log in</a> to book and view your requested trips.</p>
+<% } %>
+
+<!-- Contact Us -->
+<section id="contactUs" class="contact-section">
+  <div class="container">
+    <h2>Contact Us</h2>
+    <p>We’d love to hear from you! Send us a message below:</p>
+    <form id="contactForm" onsubmit="return false;">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your Name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Your Email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+      </div>
+
+      <button type="submit" id="submitContactButton">Send Message</button>
+      <p id="formMessage"></p>
+    </form>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+
+<!-- External Js -->
+<script src="/js/dashboard.js" defer></script>

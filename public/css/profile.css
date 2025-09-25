@@ -1,0 +1,250 @@
+/* ===== Base Styles ===== */
+body {
+  background-color: #f5fdf5;
+  color: #000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Navbar ===== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: whitesmoke;
+  padding: 10px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-title a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-title a img {
+  width: 50px;
+}
+
+.logo-title a h1 {
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  margin-right: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #2e7d20;
+}
+
+/* ===== Hamburger Menu ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  z-index: 2001;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active div:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active div:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ===== Container ===== */
+.container {
+  max-width: 900px;
+  margin: 120px auto 50px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Profile Header ===== */
+#profile h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #2e7d20;
+}
+
+#profile p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+/* ===== Profile Details ===== */
+.profile-details {
+  background-color: #f0fff0;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #2e7d20;
+  margin-bottom: 30px;
+}
+
+.profile-details p {
+  margin: 10px 0;
+  font-size: 1rem;
+}
+
+/* ===== Section Divider ===== */
+.section-divider {
+  height: 1px;
+  border: 0;
+  background: #2e7d20;
+  margin: 30px 0;
+}
+
+/* ===== Update Profile Form ===== */
+form#updateProfileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form#updateProfileForm .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+form#updateProfileForm .form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+form#updateProfileForm .form-group input {
+  padding: 10px;
+  border: 1px solid #2e7d20;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+form#updateProfileForm button {
+  background-color: #2e7d20;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+form#updateProfileForm button:hover {
+  background-color: #1b5e20;
+}
+
+#updateMessage {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-top: 1px solid #2e7d20;
+  margin-top: 50px;
+}
+
+/* ===== Responsive Styles ===== */
+@media (max-width: 768px) {
+  .container {
+    margin: 140px 20px 50px;
+    padding: 15px;
+  }
+
+  #profile h2 {
+    font-size: 1.5rem;
+  }
+
+  form#updateProfileForm button {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .hamburger {
+    display: flex;
+    margin: 0 20px;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    margin: 10px 0;
+  }
+}
+#deleteProfileForm {
+  margin-top: 20px;
+}
+
+#deleteProfileForm .delete-btn {
+  background-color: #c62828;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+#deleteProfileForm .delete-btn:hover {
+  background-color: #b71c1c;
+}

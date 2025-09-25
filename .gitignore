@@ -1,0 +1,11 @@
+# Node Modules
+node_modules/
+
+# Environment Variables
+.env 
+
+# Logs
+logs/
+
+# Code Runner Temp File
+tempCodeRunnerFile.js

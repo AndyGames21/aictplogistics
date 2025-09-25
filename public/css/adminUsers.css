@@ -1,0 +1,107 @@
+/* ===== Base Styles ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 100px 20px 40px; /* Push content below navbar */
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== Container ===== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding-top: 30px; /* Adjusted to match navbar height */
+}
+
+/* ===== Table Styles ===== */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #a0d6a0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #a0d6a0;
+  color: #000;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background-color: #f5fff5;
+}
+/* Action buttons container */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Shared button style */
+.btn {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+/* Delete button styles */
+.btn.delete {
+  background-color: #e74c3c;
+}
+
+.btn.delete:hover {
+  background-color: #c0392b;
+}
+
+/* Promote button styles */
+.btn.promote {
+  background-color: #3498db;
+}
+
+.btn.promote:hover {
+  background-color: #2980b9;
+}
+
+
+/* ===== Responsive Adjustments ===== */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 10px;
+  }
+
+  button {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}

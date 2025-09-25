@@ -1,0 +1,56 @@
+<%- include('partials/header') %>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>User Management | AICTP Logistics</title>
+<link rel="stylesheet" href="/css/adminUsers.css" />
+<link rel="shortcut icon" href="/images/logo.jpg" type="image/x-icon" />
+
+<div class="container">
+  <div class="table-responsive">
+    <h2>User Management</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fullname</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.fullname %></td>
+            <td><%= user.email %></td>
+            <td><%= user.phone %></td>
+            <td><%= user.role %></td>
+            <td>
+              <% if (user.role !== 'admin') { %>
+                <div class="action-buttons">
+                  <!-- Delete Button -->
+                  <form method="POST" action="/delete-user/<%= user.id %>" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                    <button type="submit" class="btn delete">Delete</button>
+                  </form>
+
+                  <!-- Promote Button -->
+                  <form method="POST" action="/promote-user/<%= user.id %>" onsubmit="return confirm('Are you sure you want to promote this user to admin?');">
+                    <button type="submit" class="btn promote">Promote</button>
+                  </form>
+                </div>
+              <% } else { %>
+                <!-- Demote Button -->
+                <form method="POST" action="/demote-user/<%= user.id %>" onsubmit="return confirm('Are you sure you want to demote this user?');">
+                  <button type="submit" class="btn demote">Demote</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

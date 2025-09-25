@@ -1,0 +1,305 @@
+/* === Global Styles === */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f6fa;
+  color: #333;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 900px;
+  margin: 100px auto 50px;
+  padding: 20px;
+}
+
+/* === Navbar === */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: whitesmoke;
+  padding: 10px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-title a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-title a img {
+  width: 50px;
+}
+
+.logo-title a h1 {
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  margin-right: 25px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s;
+  font-style: bold;
+}
+
+.nav-links a:hover {
+  color: #2e7d20;
+}
+
+/* === Hamburger Menu === */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  z-index: 2001;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.active div:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active div:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active div:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile Navbar */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+    margin: 0 20px;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    margin: 10px 0;
+    font-style: bold;
+  }
+}
+
+/* === Back Button === */
+.back-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #2e7d20;
+  font-weight: bold;
+}
+
+.back-btn:hover {
+  color: #3d9c0a;
+}
+
+/* === Booking Form === */
+/* Booking Form Container */
+.booking-form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Labels */
+.booking-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Inputs, Selects, Textareas */
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+/* Hover and Focus Effects */
+.booking-form input:focus,
+.booking-form select:focus,
+.booking-form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Submit Button */
+.booking-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2e7d20;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.booking-form button:hover {
+  background-color: #3d9c0a;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .booking-form {
+    padding: 15px;
+  }
+}
+
+/* Inline message */
+.form-message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* === Bookings List === */
+.bookings-list {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bookings-list h2 {
+  margin-top: 0;
+  font-size: 1.3rem;
+}
+
+.user-bookings-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+.booking-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background: #fafafa;
+  transition: box-shadow 0.3s ease;
+}
+
+.booking-item:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.booking-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.booking-header .destination {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.booking-header .date,
+.booking-header .time {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.badge-sent {
+  background: #3498db;
+  color: white;
+}
+
+.badge-processing {
+  background: #f1c40f;
+  color: white;
+}
+
+.badge-processed {
+  background: #2ecc71;
+  color: white;
+}
+
+.badge-unknown {
+  background: #7f8c8d;
+  color: white;
+}
+
+/* No bookings message */
+.no-bookings {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  text-align: center;
+  margin-top: 20px;
+}

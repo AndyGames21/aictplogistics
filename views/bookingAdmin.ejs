@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/adminBookings.css" />
+<link rel="shortcut icon" href="/images/logo.jpg" type="image/x-icon">
+
+<div class="admin-container">
+  <a href="/dashboard" class="back-btn">← Back to Home</a>
+
+  <section class="bookings-list">
+    <h2>All Requested Trips</h2>
+
+    <% if (bookings.length > 0) { %>
+      <ul class="admin-bookings-list">
+        <% bookings.forEach(booking => { %>
+          <li class="booking-item">
+            <div class="booking-header">
+              <h3 class="destination"><%= booking.origin %> => <%= booking.destination %></h3>
+              <span class="date">Departure Date : <%= new Date(booking.departure_date).toLocaleDateString() %></span>
+              <% if (booking.return_date) { %>
+                <span class="date">Return Date : <%= new Date(booking.return_date).toLocaleDateString() %></span>
+              <% } %>
+              <span class="class">Class: <%= booking.travel_class %></span>
+              <span class="passengers">Adults: <%= booking.adult_passengers %> | Children: <%= booking.child_passengers %></span>
+            </div>
+
+            <div class="booking-status">
+              <% if (booking.status === 'sent') { %>
+                <span class="badge badge-sent">Sent</span>
+              <% } else if (booking.status === 'processing') { %>
+                <span class="badge badge-processing">Processing</span>
+              <% } else { %>
+                <span class="badge badge-processed">Processed</span>
+              <% } %>
+            </div>
+
+            <div class="booking-user">
+              <p><strong>User:</strong> <%= booking.user.name %></p>
+              <p><strong>Email:</strong> <%= booking.user.email %></p>
+              <p><strong>Phone:</strong> <%= booking.user.phone %></p>
+            </div>
+
+            <div class="booking-details">
+              <p><%= booking.additional_details || "No extra details" %></p>
+            </div>
+
+            <div class="admin-actions">
+              <% if (booking.status === 'sent') { %>
+                <form method="POST" action="/update-booking/<%= booking.id %>?status=processing">
+                  <button type="submit" class="btn btn-process">Process</button>
+                </form>
+              <% } else if (booking.status === 'processing') { %>
+                <form method="POST" action="/update-booking/<%= booking.id %>?status=processed">
+                  <button type="submit" class="btn btn-complete">Processed</button>
+                </form>
+              <% } else { %>
+                <span class="final-status">✔ Already Processed</span>
+              <% } %>
+
+              <!-- Delete Booking -->
+              <form method="POST" action="/bookings/<%= booking.id %>?_method=DELETE" class="delete-booking-form">
+                <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?');">Delete</button>
+              </form>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="no-bookings">No trips booked yet.</p>
+    <% } %>
+  </section>
+</div>
+

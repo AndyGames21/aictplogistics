@@ -1,0 +1,128 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Page background and layout */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f4fdf4;
+  color: #000;
+}
+
+
+/* Container */
+.container {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.container h1 {
+  margin-bottom: 20px;
+  color: #2e7d32;
+  font-size: 28px;
+}
+
+/* Input group */
+.input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #2e7d32;
+}
+/* Submit button */
+button {
+  background: #2e7d32;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #256629;
+}
+
+/* Footer text */
+.footer-text {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.footer-text a {
+  color: #2e7d32;
+  text-decoration: none;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+/* Error Message */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}   
+/* Responsive styles for small screens */
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 40px 30px;
+    max-width: 90%;
+  }
+
+  .container h1 {
+    font-size: 32px;
+  }
+
+  .input-group input {
+    font-size: 16px;
+    padding: 14px;
+  }
+
+  button {
+    padding: 14px;
+    font-size: 18px;
+  }
+
+  .footer-text {
+    font-size: 16px;
+  }
+
+  .error-message {
+    font-size: 15px;
+  }
+}

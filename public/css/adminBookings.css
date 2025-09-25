@@ -1,0 +1,243 @@
+/* ===== Admin Bookings Page Styles ===== */
+/* Container */
+.admin-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+/* Back Button */
+.back-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+.back-btn:hover {
+  color: #21618c;
+}
+
+/* Heading */
+.bookings-list h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #2c3e50;
+}
+
+/* Booking List */
+.admin-bookings-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Booking Item */
+.booking-item {
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Header: Destination and Date */
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.booking-header .destination {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #34495e;
+}
+.booking-header .date {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+/* Status Badges */
+.booking-status {
+  margin: 10px 0;
+}
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+}
+.badge-sent {
+  background-color: #f39c12;
+}
+.badge-processing {
+  background-color: #3498db;
+}
+.badge-processed {
+  background-color: #2ecc71;
+}
+
+/* User Info */
+.booking-user p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #2c3e50;
+}
+
+/* Booking Details */
+.booking-details {
+  margin: 10px 0;
+  font-style: italic;
+  color: #7f8c8d;
+}
+
+/* Action Buttons */
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.btn {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* Process button (sent → processing) */
+.btn-process {
+  background-color: #f39c12;
+}
+.btn-process:hover {
+  background-color: #d68910;
+}
+
+/* Processed button (processing → processed) */
+.btn-complete {
+  background-color: #2ecc71;
+}
+.btn-complete:hover {
+  background-color: #27ae60;
+}
+
+/* Final status (already processed) */
+.final-status {
+  color: #2ecc71;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+/* Delete button */
+.btn-delete {
+  background-color: #e74c3c;
+}
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+/* Empty State */
+.no-bookings {
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  margin-top: 20px;
+}
+/* Media Queries */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .admin-container {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .booking-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .booking-header .destination {
+    font-size: 1.2rem;
+  }
+
+  .booking-header .date,
+  .booking-header .class,
+  .booking-header .passengers {
+    font-size: 0.85rem;
+  }
+
+  .admin-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btn {
+    flex: 1 1 45%;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  .booking-item {
+    padding: 15px;
+  }
+
+  .booking-header .destination {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .booking-header {
+    gap: 3px;
+  }
+
+  .booking-user p,
+  .booking-details {
+    font-size: 0.85rem;
+  }
+
+  .admin-actions {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+
+/* Very Tiny Screens */
+@media (max-width: 380px) {
+  .booking-header .destination {
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    padding: 7px 10px;
+  }
+
+  .booking-details {
+    font-size: 0.8rem;
+  }
+}

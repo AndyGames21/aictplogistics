@@ -1,0 +1,87 @@
+<% if (!user) { %>
+  <script>window.location.href = "/login";</script>
+<% } else if (user.role === 'admin') { %>
+  <script>
+    alert("Admins cannot access user profiles.");
+    window.location.href = "/";
+  </script>
+<% } else { %>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>My Profile | AICTP Logistics LTD</title>
+  <link rel="stylesheet" href="/css/profile.css" />
+  <link rel="shortcut icon" href="/images/logo.jpg" type="image/x-icon">
+  <script src="/js/profile.js" defer></script>
+
+<!-- Navbar -->
+<nav>
+  <div class="logo-title">
+    <a href="/" class="logo-link">
+      <img src="/images/logo.jpg" alt="AICTP Logo" />
+      <h1>AICTP Logistics</h1>
+    </a>
+  </div>
+
+  <!-- Hamburger -->
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <div class="nav-links" id="navLinks">
+    <a href="/">Dashboard</a>
+    <a href="/bookings">My Trips</a>
+    <a href="/services">Services</a>
+    <a href="/contactUs">Contact Us</a>
+    <a href="/logout">Logout</a>
+  </div>
+</nav>
+
+
+  <!-- Profile Section -->
+  <section class="container" id="profile">
+    <h2>My Profile</h2>
+    <p>Welcome, <strong><%= user.name %></strong>!</p>
+
+    <div class="profile-details">
+      <p><strong>Email:</strong> <%= user.email %></p>
+      <p><strong>Phone:</strong> <%= user.phone %></p>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Update Profile Form -->
+    <h3>Update Profile</h3>
+    <form id="updateProfileForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Update Full Name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Update Email Address">
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" placeholder="Update Phone Number">
+      </div>
+
+      <div class="form-group">
+        <label for="password">New Password</label>
+        <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm New Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Leave blank to keep current password">
+      </div>
+      <button type="submit" id="updateProfileButton">Update Profile</button>
+      <p id="updateMessage"></p>
+    </form>
+    <form id="deleteProfileForm" action="/delete-profile" method="POST" onsubmit="return confirm('Are you sure you want to delete your profile? This action cannot be undone.');">
+  <button type="submit" class="delete-btn">Delete Profile</button>
+</form>
+  </section>
+<%- include('partials/footer') %>
+<% } %>

@@ -1,0 +1,47 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="/images/logo.jpg" type="image/x-icon">
+<link rel="stylesheet" href="/css/header.css">
+<script src="/js/header.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "https://aictp.com.ng/",
+  "logo": "https://aictp.com.ng/images/logo.jpg"
+}
+</script>
+<title><%= title || "AICTP Logistics LTD" %></title>
+<meta name="description" content="<%= description || 'AICTP Logistics – trusted logistics, travel, and procurement services.' %>">
+<!-- Navbar -->
+<nav>
+    <div class="logo-title">
+      <a href="/#" class="logo-link">
+        <img src="/images/logo.jpg" alt="AICTP Logo" />
+        <h1>AICTP LOGISTICS LTD</h1>
+      </a>
+    </div>
+
+    <div class="nav-links">
+      <% if (user) { %>
+        <% if (user.role === 'admin') { %>
+          <a href="/userAdmin">User Management</a>
+          <a href="/bookingAdmin">All Bookings</a>
+        <% } else { %>
+          <a href="/profile">My Profile</a>
+          <a href="/bookings">My Trips</a>
+        <% } %>
+        <a href="/logout">Logout</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      <% } %>
+      <a href="/#services" class="scroll-link">Services</a>
+      <a href="/#contactUs" class="scroll-link">Contact Us</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+</nav>
+<main class="container">
