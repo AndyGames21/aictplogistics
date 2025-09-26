@@ -58,8 +58,21 @@
               <!-- Delete Booking -->
               <form method="POST" action="/bookings/<%= booking.id %>?_method=DELETE" class="delete-booking-form">
                 <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?');">Delete</button>
-              </form>
+              </form> 
+              <!-- Message Bar -->
+               <div class="admin-message">
+                <form method="POST" action="/send-message/<%= booking.id %>">
+                  <input 
+                    type="text" 
+                    name="message" 
+                    placeholder="Type a message for <%= booking.user.name %>..." 
+                    required 
+                  />
+                  <button type="submit" class="btn btn-message">Send</button>
+                </form>
+              </div>
             </div>
+           
           </li>
         <% }) %>
       </ul>

@@ -493,6 +493,27 @@ app.post("/update-booking/:id", ensureAuthenticated, ensureAdmin, async (req, re
     res.send("Error updating booking status.");
   }
 });
+app.post('/send-message/:id', async (req, res) => {
+  const bookingId = req.params.id;
+  const { message } = req.body;
+
+  // Find the booking
+  const booking = await Booking.findById(bookingId).populate('user');
+
+  if (!booking) {
+    return res.status(404).send("Booking not found");
+  }
+
+  await transporter.sendMail({
+    from: '"Admin" <process.env.EMAIL_USER>',
+    to: booking.user.email,
+    subject: `Message about your booking (${booking.origin} → ${booking.destination})`,
+    text: message,
+  });
+
+  res.redirect('/bookingAdmin');
+});
+
 
 app.delete("/bookings/:id", ensureAuthenticated, ensureAdmin, async (req, res) => {
   const bookingId = req.params.id;
