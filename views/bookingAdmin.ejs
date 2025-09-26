@@ -13,7 +13,7 @@
         <% bookings.forEach(booking => { %>
           <li class="booking-item">
             <div class="booking-header">
-              <h3 class="destination"><%= booking.origin %> => <%= booking.destination %></h3>
+              <h3 class="destination">From <%= booking.origin %> To <%= booking.destination %></h3>
               <span class="date">Departure Date : <%= new Date(booking.departure_date).toLocaleDateString() %></span>
               <% if (booking.return_date) { %>
                 <span class="date">Return Date : <%= new Date(booking.return_date).toLocaleDateString() %></span>
