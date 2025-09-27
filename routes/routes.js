@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { getGreeting } = require("../helpers"); // 👈 import greeting helper
+const { getGreeting } = require("../helpers");
+const { slides, services } = require("../statics");    
 
 // Import sub-route modules
 const authRoutes = require("../auth/auth");
@@ -31,6 +32,8 @@ router.get("/", (req, res) => {
   res.render("dashboard", {
     user: req.session.user || null,
     greeting: getGreeting(),
+    slides,
+    services,  
     title: "AICTP Logistics LTD",
     description: "Welcome to AICTP Logistics LTD – Your trusted logistics and travel partner."
   });
