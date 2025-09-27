@@ -1,7 +1,7 @@
 // Module Imports
 const cron = require("node-cron");
 const pool = require("./config/db");
-const transporter = require("./mail");
+const transporter = require("./mailer");
 
 // ===================
 // Automatic Cleanup for Expired Bookings

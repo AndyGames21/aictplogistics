@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../config/db");
 const { ensureAuthenticated } = require("../helpers");
-const transporter = require("../mail");
+const transporter = require("../mailer");
 
 // ---- Get Bookings for Logged-in User ----
 router.get("/", ensureAuthenticated, async (req, res) => {

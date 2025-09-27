@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../config/db");
-const transporter = require("../config/mailer"); // assuming you have this set up
-const { ensureAuthenticated, ensureAdmin } = require("../middleware/auth");
+const transporter = require("../config/mailer"); 
+const { ensureAuthenticated, ensureAdmin } = require("../helpers");
 
 // ---- 1. User Management (Admin Only) ----
 router.get("/userAdmin", ensureAuthenticated, ensureAdmin, async (req, res) => {
