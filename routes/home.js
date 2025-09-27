@@ -10,7 +10,7 @@ router.get("/favicon.ico", (req,res) => res.status(204).end());
 // Home & dashboard
 router.get("/", async (req, res) => {
   const user = req.session.user || null;
-  let userBookings = [];
+  let bookings = [];
 
   if (user) {
     try {
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
         "SELECT * FROM bookings WHERE user_id = $1 ORDER BY departure_date DESC",
         [user.id]
       );
-      userBookings = results.rows;
+      bookings = results.rows;
     } catch (err) {
       console.error("Error fetching bookings:", err);
     }
@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
   res.render("dashboard", { 
     greeting: getGreeting(),
     user, 
-    bookings: userBookings,
+    bookings,
     services,
     slides,
     title: "Dashboard | AICTP Logistics LTD",
