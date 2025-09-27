@@ -38,3 +38,4 @@ cron.schedule("0 0 * * *", async () => {
       console.error("[Cleanup Job] Error deleting expired bookings:", err);
     }
 });
+module.exports = cron;
