@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../config/db");
 const { contactLimiter } = require("../helpers");
-const transporter = require("../mailer");
+const transporter = require("../config/mailer");
 
 // ---- Contact Form ----
 router.post("/", contactLimiter, async (req, res) => {

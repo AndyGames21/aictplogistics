@@ -16,7 +16,7 @@ const mainRoutes = require("./routes/routes");
 // Helpers & Utils
 const cronJobs = require("./cron");
 const { ensureAuthenticated, ensureAdmin, getGreeting, contactLimiter } = require("./helpers");
-const transporter = require("./mailer");
+const transporter = require("./config/mailer");
 const { services, slides } = require("./statics");
 
 // -------------------------
