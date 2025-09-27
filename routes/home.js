@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
   res.render("dashboard", { 
     greeting: getGreeting(),
     user, 
-    bookings,
+    bookings, 
     services,
     slides,
     title: "Dashboard | AICTP Logistics LTD",
