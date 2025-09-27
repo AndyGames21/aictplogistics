@@ -18,7 +18,7 @@ const profileRoutes = require("./profile");
 router.use("/", authRoutes);
 
 // Contact form routes
-router.use("/contact", contactRoutes);
+router.use("/", contactRoutes);
 
 // Bookings (user-facing)
 router.use("/bookings", bookingRoutes);
