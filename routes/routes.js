@@ -28,14 +28,30 @@ router.use("/admin", adminRoutes);
 // ====================
 // Root/Homepage
 // ====================
-router.get("/", (req, res) => {
-  res.render("dashboard", {
-    user: req.session.user || null,
+router.get("/", async (req, res) => {
+  const user = req.session.user || null;
+  let bookings = [];
+
+  if (user) {
+    try {
+      const results = await pool.query(
+        "SELECT * FROM bookings WHERE user_id = $1 ORDER BY departure_date DESC",
+        [user.id]
+      );
+      bookings = results.rows;
+    } catch (err) {
+      console.error("Error fetching bookings:", err);
+    }
+  }
+
+  res.render("dashboard", { 
     greeting: getGreeting(),
+    user, 
+    bookings,
+    services,
     slides,
-    services,  
-    title: "AICTP Logistics LTD",
-    description: "Welcome to AICTP Logistics LTD – Your trusted logistics and travel partner."
+    title: "Dashboard | AICTP Logistics LTD",
+    description: "AICTP Logistics - trusted logistics, travel, and procurement services."
   });
 });
 
