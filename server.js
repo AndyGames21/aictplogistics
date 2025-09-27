@@ -35,13 +35,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use((req, res, next) => {
-  res.locals.title = "AICTP Logistics LTD";
-  res.locals.description = "AICTP Logistics – trusted logistics, travel, and procurement services.";
-  res.locals.user = req.session.user || null;
-  next();
-});
-
 
 // -------------------------
 // Session Setup
@@ -77,6 +70,15 @@ app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   next();
 });
+
+// Title and Description Defaults
+app.use((req, res, next) => {
+  res.locals.title = "AICTP Logistics LTD";
+  res.locals.description = "AICTP Logistics – trusted logistics, travel, and procurement services.";
+  res.locals.user = req.session.user || null;
+  next();
+});
+
 
 // -------------------------
 // Routes
