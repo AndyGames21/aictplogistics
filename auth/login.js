@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ success: false, message: "Both email and password are required." });
+    return res.json({ success: false, message: "Both email and password are required." });
   }
 
   try {
@@ -38,11 +38,14 @@ router.post("/", async (req, res) => {
     const redirectTo = req.session.returnTo || "/dashboard";
     delete req.session.returnTo;
 
-    res.status(200).json({ success: true, redirect: redirectTo });
+    console.log("User logged in:", req.session.user, "returnTo:", redirectTo);
+
+    return res.json({ success: true, redirect: redirectTo });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Server error. Please try again." });
+    return res.json({ success: false, message: "Server error. Please try again." });
   }
 });
+
 
 module.exports = router;

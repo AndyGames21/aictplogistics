@@ -63,13 +63,19 @@ app.use(
 // -------------------------
 // Attach user session to templates
 // -------------------------
-app.use((req, res, next) => {
-  if (!req.session.user && !["/login", "/register"].includes(req.path)) {
+function saveReturnTo(req, res, next) {
+  const isLoggedIn = !!req.session.user;
+  const isAuthPage = req.path === "/login" || req.path === "/register" || req.path.startsWith("/login") || req.path.startsWith("/register");
+
+  if (!isLoggedIn && !isAuthPage && req.method === "GET") {
     req.session.returnTo = req.originalUrl;
   }
-  res.locals.user = req.session.user || null;
+  
+
   next();
-});
+}
+
+app.use(saveReturnTo);
 
 // Title and Description Defaults
 app.use((req, res, next) => {

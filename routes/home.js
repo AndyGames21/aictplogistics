@@ -11,19 +11,20 @@ router.get("/favicon.ico", (req,res) => res.status(204).end());
 router.get("/", async (req, res) => {
   const user = req.session.user || null;
   let bookings = [];
-
   if (user) {
     try {
       const results = await pool.query(
         "SELECT * FROM bookings WHERE user_id = $1 ORDER BY departure_date DESC",
         [user.id]
       );
-      bookings = results.rows;
+      bookings = results.rows.map(b => ({
+        ...b,
+        status: b.status || "sent",
+      }));
     } catch (err) {
       console.error("Error fetching bookings:", err);
     }
   }
-
   res.render("dashboard", { 
     greeting: getGreeting(),
     user, 

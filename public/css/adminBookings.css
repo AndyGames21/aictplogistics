@@ -2,7 +2,7 @@
 /* Container */
 .admin-container {
   max-width: 1000px;
-  margin: 20px auto;
+  margin: 30px auto;
   padding: 20px;
   font-family: Arial, sans-serif;
   background: #f9fafb;
@@ -13,13 +13,13 @@
 .back-btn {
   display: inline-block;
   margin-bottom: 20px;
-  color: #3498db;
+  color: #23cf5d;
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s;
 }
 .back-btn:hover {
-  color: #21618c;
+  color: #1ae05c;
 }
 
 /* Heading */

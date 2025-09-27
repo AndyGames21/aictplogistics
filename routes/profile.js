@@ -6,12 +6,12 @@ const { ensureAuthenticated } = require("../helpers");
 const router = express.Router();
 
 // Profile page
-router.get("/", ensureAuthenticated, (req, res) => {
+router.get("/profile", ensureAuthenticated, (req, res) => {
   res.render("profile", { user: req.session.user });
 });
 
 // Update profile
-router.post("/update", ensureAuthenticated, async (req, res) => {
+router.post("/profile/updateProfile", ensureAuthenticated, async (req, res) => {
   const { name, phone, email, password } = req.body;
   const userId = req.session.user.id;
 
@@ -54,7 +54,7 @@ router.post("/update", ensureAuthenticated, async (req, res) => {
 });
 
 // Delete profile
-router.post("/delete", ensureAuthenticated, async (req, res) => {
+router.post("/profile/deleteProfile", ensureAuthenticated, async (req, res) => {
   try {
     const userId = req.session.user.id;
     if (!userId) return res.status(401).send("Unauthorized");
