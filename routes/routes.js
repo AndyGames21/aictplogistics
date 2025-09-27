@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { getGreeting } = require("../helpers"); // 👈 import greeting helper
 
 // Import sub-route modules
 const authRoutes = require("../auth/auth");
@@ -23,17 +24,16 @@ router.use("/bookings", bookingRoutes);
 // Admin dashboard
 router.use("/admin", adminRoutes);
 
-
 // ====================
 // Root/Homepage
 // ====================
 router.get("/", (req, res) => {
   res.render("dashboard", {
     user: req.session.user || null,
+    greeting: getGreeting(),
     title: "AICTP Logistics LTD",
     description: "Welcome to AICTP Logistics LTD – Your trusted logistics and travel partner."
   });
 });
-
 
 module.exports = router;
