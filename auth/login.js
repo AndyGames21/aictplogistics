@@ -38,8 +38,6 @@ router.post("/", async (req, res) => {
     const redirectTo = req.session.returnTo || "/dashboard";
     delete req.session.returnTo;
 
-    console.log("User logged in:", req.session.user, "returnTo:", redirectTo);
-
     return res.json({ success: true, redirect: redirectTo });
   } catch (error) {
     console.error(error);
