@@ -53,15 +53,15 @@ nav {
 .nav-links {
   display: flex;
   gap: 15px;
-  margin-right: 25px;
+  margin-right: 30px;
 }
 
 .nav-links a {
   text-decoration: none;
   color: #333;
-  font-weight: 500;
+  font-weight: 550;
   transition: color 0.2s;
-  font-style: bold;
+  font-size:15px;
 }
 
 .nav-links a:hover {

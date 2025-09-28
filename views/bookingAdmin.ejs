@@ -1,4 +1,6 @@
-<%- include('partials/header') %>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <link rel="stylesheet" href="/css/adminBookings.css" />
 <link rel="shortcut icon" href="/images/logo.jpg" type="image/x-icon">
 
@@ -13,7 +15,7 @@
         <% bookings.forEach(booking => { %>
           <li class="booking-item">
             <div class="booking-header">
-              <h3 class="destination"><%= booking.origin %> => <%= booking.destination %></h3>
+              <h3 class="destination">From <%= booking.origin %> To <%= booking.destination %></h3>
               <span class="date">Departure Date : <%= new Date(booking.departure_date).toLocaleDateString() %></span>
               <% if (booking.return_date) { %>
                 <span class="date">Return Date : <%= new Date(booking.return_date).toLocaleDateString() %></span>
@@ -58,8 +60,21 @@
               <!-- Delete Booking -->
               <form method="POST" action="/bookings/<%= booking.id %>?_method=DELETE" class="delete-booking-form">
                 <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure?');">Delete</button>
-              </form>
+              </form> 
+              <!-- Message Bar -->
+               <div class="admin-message">
+                <form method="POST" action="/send-message/<%= booking.id %>">
+                  <input 
+                    type="text" 
+                    name="message" 
+                    placeholder="Type a message for <%= booking.user.name %>..." 
+                    required 
+                  />
+                  <button type="submit" class="btn btn-message">Send</button>
+                </form>
+              </div>
             </div>
+           
           </li>
         <% }) %>
       </ul>
