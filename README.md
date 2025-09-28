@@ -46,7 +46,7 @@ aictplogistics/
 ├── server.js         # entry point
 ├── helpers.js        # helper utilities
 ├── statics.js        # static file setup
-├── cron.js           # cron tasks (if any)
+├── cron.js           # cron tasks 
 └── package.json
 ```
 
