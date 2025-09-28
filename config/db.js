@@ -4,16 +4,17 @@ const creds = require("./credentials");
 
 let pool;
 
-if (creds.nodeEnv === "production" && creds.databaseUrl) {
-  // Production environment — use DATABASE_URL with SSL
+if (creds.databaseUrl) {
+  // Use DATABASE_URL
   pool = new Pool({
     connectionString: creds.databaseUrl,
-    ssl: {
-      rejectUnauthorized: false
-    }
+    ssl:
+      creds.nodeEnv === "production"
+        ? { rejectUnauthorized: false }
+        : false 
   });
 } else {
-  // Local environment 
+  //Local environment using manual credentials
   pool = new Pool({
     host: creds.db.host,
     user: creds.db.user,
