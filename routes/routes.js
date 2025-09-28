@@ -21,7 +21,7 @@ router.use("/", authRoutes);
 router.use("/", contactRoutes);
 
 // Bookings (user-facing)
-router.use("/", bookingRoutes);
+router.use("/bookings", bookingRoutes);
 
 // Admin dashboard
 router.use("/", adminRoutes);
