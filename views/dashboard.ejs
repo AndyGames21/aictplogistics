@@ -5,9 +5,9 @@
 <section id="home" class="container">
   <h2>
     <% if (user) { %>
-      <%= greeting %>, <%= user.name %>!
+      <%- greeting %>, <%= user.name %>!
     <% } else { %>
-      <%= greeting %>!
+      <%- greeting %>!
     <% } %>
   </h2>
   <p>Explore the best travel deals and book your next adventure.</p>
