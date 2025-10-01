@@ -17,10 +17,11 @@ function ensureAdmin(req, res, next) {
 
 // Greeting
 function getGreeting() {
-  const hour = new Date().getHours();
-  if (hour < 11) return "Good Morning";
-  if (hour < 17) return "Good Afternoon";
-  return "Good Evening";
+  // const hour = new Date().getHours();
+  // if (hour < 11) return "Good Morning";
+  // if (hour < 17) return "Good Afternoon";
+  // return "Good Evening";
+  return '<img src="https://flagcdn.com/ng.svg" width="48" height="32" alt="Nigeria Flag" style="vertical-align:middle; margin-right:10px;"> Happy Independence Day';
 }
 
 // Rate Limiter
