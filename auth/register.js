@@ -5,7 +5,15 @@ const pool = require("../config/db");
 const router = express.Router();
 
 // Register Page
-router.get("/", (req, res) => res.render("register"));
+
+router.get("/", (req, res) => {
+ if (req.session.user){
+   return res.status(403).json({message:"User Already Logged In"})
+ }
+ else{
+  res.render("register")  
+ }
+});
 
 // Handle Registration
 router.post("/", async (req, res) => {
