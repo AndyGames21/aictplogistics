@@ -5,7 +5,14 @@ const pool = require("../config/db");
 const router = express.Router();
 
 // Register Page
-router.get("/", (req, res) => res.render("register"));
+router.get("/", (req, res) => {
+  if(req.session.user){
+    res.status(403).redirect("/dashboard");
+  }
+  else{
+    res.render("register")
+  }
+});
 
 // Handle Registration
 router.post("/", async (req, res) => {
