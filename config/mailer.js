@@ -1,4 +1,4 @@
-// Module Imports
+// Email Module Import
 const nodemailer = require("nodemailer");
 
 // Nodemailer Setup
