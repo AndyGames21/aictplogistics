@@ -93,7 +93,7 @@ app.use("/", authRoutes);
 app.use("/", mainRoutes);
 
 // -------------------------
-// Start Server
+// Start Server (Local Dev)
 // -------------------------
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

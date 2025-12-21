@@ -15,12 +15,13 @@ function ensureAdmin(req, res, next) {
   res.status(403).send("Access denied. Admins only.");
 }
 
-// Greeting
+// Greeting (Replaced with seasonal greetings)
 function getGreeting() {
-  const hour = new Date().getHours();
-  if (hour < 11) return "Good Morning";
-  if (hour < 17) return "Good Afternoon";
-  return "Good Evening";
+  // const hour = new Date().getHours();
+  // if (hour < 11) return "Good Morning";
+  // if (hour < 17) return "Good Afternoon";
+  // return "Good Evening";
+  return "❄️🎁 Happy Holidays";
 }
 
 // Rate Limiter
