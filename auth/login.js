@@ -7,7 +7,7 @@ const router = express.Router();
 // Login Page
 router.get("/", (req, res) => {
   if(req.session.user){
-    res.status(403).json({message: "User Already Logged In"})
+    res.render("dashboard");
   }
   else{
     res.render("login")
