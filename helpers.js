@@ -21,7 +21,7 @@ function getGreeting() {
   // if (hour < 11) return "Good Morning";
   // if (hour < 17) return "Good Afternoon";
   // return "Good Evening";
-  return "❄️🎁 Merry Christmas!";
+  return "❄️🎁 Merry Christmas";
 }
 
 // Rate Limiter
