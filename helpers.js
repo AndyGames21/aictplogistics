@@ -17,11 +17,10 @@ function ensureAdmin(req, res, next) {
 
 // Greeting (Replaced with seasonal greetings)
 function getGreeting() {
-  // const hour = new Date().getHours();
-  // if (hour < 11) return "Good Morning";
-  // if (hour < 17) return "Good Afternoon";
-  // return "Good Evening";
-  return "Happy New Year 🎊";
+  const hour = new Date().getHours();
+  if (hour < 11) return "Good Morning";
+  if (hour < 17) return "Good Afternoon";
+  return "Good Evening";
 }
 
 // Rate Limiter
